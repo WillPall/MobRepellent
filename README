@@ -1,0 +1,51 @@
+MobRepellent v0.1 - a Bukkit plugin
+
+* What is MobRepellent?
+
+    MobRepellent is a plugin for the third-party Minecraft server project
+    Bukkit (http://bukkit.org). MobRepellent allows players to construct
+    "repellers" that will prevent hostile mobs from spawning within a certain
+    distance.
+
+* How do I use MobRepellent?
+
+    Simply drag MobRepellent.jar into your Bukkit /plugins directory.
+    MobRepellent will automatically create all the necessary files.
+
+    Once the plugin is loaded, to create a repeller you'll need 7 diamond
+    blocks (not diamond gems). First, using five diamond blocks, construct a
+    shape that looks like a plus sign (+) parallel with the ground. Next,
+    place the remaining two diamond blocks directly above the block in the
+    center of the plus sign.
+
+    After the repeller is constructed, no hostile mobs will spawn within a 200-
+    block cube of the base of the repeller. To remove the repeller, simply
+    remove one of the diamond blocks that is part of the repeller.
+
+* Known issues
+
+    - Multi-world support is not available (creating a repeller in one world
+      will repel mobs in the same coordinates in all worlds). This is a minor
+      issue (with major consequences) that will be fixed in the next update.
+
+* Todo list
+
+    - Fix multi-world support
+    - Add Permissions support
+    - Add configuration file (config.yml)
+    - Add configuration option to select block type for repellers
+    - Add configuration option to define distance to repel mobs
+
+* License and Reuse
+
+    I don't really feel like including all kinds of crazy license info or
+    requiring any derivatives to use a specific license. I'm lazy, so I hereby
+    relenquish all copyrights and any other rights to this software and the
+    source material. Do what you want with it. If you use any of this in one of
+    your own projects (although I can't see why you would), send me an email.
+    I'd love to hear about it.
+
+* Contact and Authorship
+
+    This plugin is solely developed by Will Pall.
+    Email: pall.will@gmail.com
