@@ -1,4 +1,4 @@
-package com.nucleargrass.mobrepel;
+package mobrepellent;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

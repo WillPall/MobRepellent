@@ -1,4 +1,4 @@
-package com.nucleargrass.mobrepel;
+package mobrepellent;
 
 import java.io.File;
 import java.util.ArrayList;

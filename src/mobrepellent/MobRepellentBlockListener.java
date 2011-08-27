@@ -1,4 +1,4 @@
-package com.nucleargrass.mobrepel;
+package mobrepellent;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
