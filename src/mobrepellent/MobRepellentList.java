@@ -76,7 +76,7 @@ public class MobRepellentList
 				this.list.remove( i );
 				removed = true;
 				this.plugin.getLogger().info(
-						"[MobRepellent] A Mob Repellent has been destroyed." );
+						"[MobRepellent] A Mob Repellent has been destroyed at (" + current[0] + "," + current[1] + "," + current[2] + ")." );
 			}
 		}
 		save();
@@ -121,8 +121,8 @@ public class MobRepellentList
 						linePos[ 1 ] = Integer.parseInt( fields[ 1 ] );
 						linePos[ 2 ] = Integer.parseInt( fields[ 2 ] );
 
-						this.plugin.getLogger().info(
-								"[MobRepellent] A Mob Repellent has been loaded at " + linePos[0] + "," + linePos[1] + "," + linePos[2]  );
+						//this.plugin.getLogger().info(
+						//		"[MobRepellent] A Mob Repellent has been loaded at " + linePos[0] + "," + linePos[1] + "," + linePos[2]  );
 						this.list.add( i, linePos );
 						i++;
 					}
@@ -139,7 +139,7 @@ public class MobRepellentList
 		}
 		else
 		{
-			this.plugin.getLogger().info( "[MobRepellent] No repellers were found." );
+			this.plugin.getLogger().info( "[MobRepellent] No repeller file was found. Creating new file." );
 		}
 	}
 
