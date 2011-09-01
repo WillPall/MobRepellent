@@ -1,4 +1,4 @@
-MobRepellent v0.1 - a Bukkit plugin
+MobRepellent v0.2 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -24,17 +24,26 @@ MobRepellent v0.1 - a Bukkit plugin
 
 * Known issues
 
-    - Multi-world support is not available (creating a repeller in one world
-      will repel mobs in the same coordinates in all worlds). This is a minor
-      issue (with major consequences) that will be fixed in the next update.
+    - The 200-block cube is a little too large for most needs. This will be
+      fixed with the introduction of the configuration file.
 
 * Todo list
 
-    - Fix multi-world support
     - Add Permissions support
     - Add configuration file (config.yml)
     - Add configuration option to select block type for repellers
     - Add configuration option to define distance to repel mobs
+    - Add options for creating multiple strength repellers (ie. a repeller
+      constructed out of iron blocks that repels for a smaller amount than a
+      repeller constructed of diamond blocks)
+
+* Changelog
+
+    Version 0.2
+        - Added multi-world support (WOOHOO!)
+
+    Version 0.1
+        - Uploaded first version
 
 * License and Reuse
 
