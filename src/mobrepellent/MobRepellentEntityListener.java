@@ -1,10 +1,7 @@
 package mobrepellent;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.entity.Animals;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityListener;
 
@@ -24,10 +21,10 @@ public class MobRepellentEntityListener extends EntityListener
 
 		Location loc = event.getLocation();
 		
-		if( plugin.getRepellerList().isRepelled( loc.getX(), loc.getY(), loc.getZ() ) )
+		if( plugin.getRepellerList().isRepelled( loc.getX(), loc.getY(), loc.getZ(), loc.getWorld() ) )
 		{
 			//this.plugin.getLogger().info(
-			//		"[MobRepellent] A mob has been repelled at " + loc.getX() + "," + loc.getY() + "," + loc.getZ()  );
+			//		"[MobRepellent] A mob has been repelled at " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + loc.getWorld().getName()  );
 			event.setCancelled( true );
 		}
 	}

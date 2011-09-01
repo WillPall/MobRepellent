@@ -9,92 +9,94 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 public class MobRepellentList
 {
 	private File file;
-	private ArrayList<int[]> list;
+	//private ArrayList<int[]> list;
+	private ArrayList<Block> list;
 	private MobRepellent plugin;
 
 	public MobRepellentList( String workingDir, MobRepellent plugin )
 	{
 		this.plugin = plugin;
 		this.file = new File( workingDir + "repellers.list" );
-		this.list = new ArrayList();
+		this.list = new ArrayList<Block>();
 		load();
 	}
 	
-	public boolean isRepelled( double x, double y, double z )
+	public boolean isRepelled( double x, double y, double z, World world )
 	{
-		return isRepelled( x, y, z, 100 );
+		return isRepelled( x, y, z, world, 100 );
 	}
 	
-	public boolean isRepelled( double x, double y, double z, int radius )
+	public boolean isRepelled( double x, double y, double z, World world, int radius )
 	{
 		for( int i = 0; i < list.size(); i++ )
 		{
-			if( ( ( list.get(i)[0] - radius ) < x ) && ( ( list.get(i)[0] + radius ) > x ) &&
-				( ( list.get(i)[1] - radius ) < y ) && ( ( list.get(i)[1] + radius ) > y ) &&
-				( ( list.get(i)[2] - radius ) < z ) && ( ( list.get(i)[2] + radius ) > z ) )
+			if( ( ( list.get(i).getX() - radius ) < x ) && ( ( list.get(i).getX() + radius ) > x ) &&
+				( ( list.get(i).getY() - radius ) < y ) && ( ( list.get(i).getY() + radius ) > y ) &&
+				( ( list.get(i).getZ() - radius ) < z ) && ( ( list.get(i).getZ() + radius ) > z ) &&
+				( ( list.get(i).getWorld().getUID().equals( world.getUID() ) ) ) )
 				return true;
 		}
 		
 		return false;
 	}
-
-	public void add( int[] repeller )
-	{
-		this.list.add( repeller );
-		save();
-	}
 	
 	public void add( Block block )
 	{
-		int coords[] = { block.getX(), block.getY(), block.getZ() };
-		this.add( coords );
+		this.list.add( block );
+		save();
 	}
 	
-	public boolean remove( Block block )
+	public boolean remove( Block base )
 	{
-		int coords[] = { block.getX(), block.getY(), block.getZ() };
-		return this.remove( coords );
-	}
-
-	public boolean remove( int[] repeller )
-	{
-		boolean removed = false;
+		int pos = getPositionOfRepeller( base );
 		
+		if( pos > -1 )
+		{
+			list.remove( pos );
+			plugin.getLogger().info( "[MobRepellent] A repeller has been destroyed at (" + base.getX() + "," + base.getY() + "," + base.getZ() + ")" );
+			save();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Finds the position in the repeller ArrayList of the given base block.
+	 * 
+	 * @param base The base of the repeller that is being searched for.
+	 * @return The index of the repeller or -1 if none are found.
+	 */
+	private int getPositionOfRepeller( Block base )
+	{
 		for( int i = 0; i < list.size(); i++ )
 		{
-			int current[] = this.list.get( i );
+			Block cur = list.get( i );
 			
-			if( ( current[0] == repeller[0] ) &&
-				( current[1] == repeller[1] ) &&
-				( current[2] == repeller[2] ) )
+			if( ( cur.getX() == base.getX() ) &&
+				( cur.getY() == base.getY() ) &&
+				( cur.getZ() == base.getZ() ) &&
+				( cur.getWorld().getUID().equals( base.getWorld().getUID() ) ) )
 			{
-				this.list.remove( i );
-				removed = true;
-				this.plugin.getLogger().info(
-						"[MobRepellent] A Mob Repellent has been destroyed at (" + current[0] + "," + current[1] + "," + current[2] + ")." );
+				return i;
 			}
 		}
-		save();
-		return removed;
+		
+		return -1;
 	}
 	
-	public boolean contains( Block block )
+	public boolean contains( Block base )
 	{
-		int coords[] = { block.getX(), block.getY(), block.getZ() };
-		//this.plugin.getLogger().info( "Block: (" + coords[0] + coords[1] + coords[2] + ")" );
-		for( int i = 0; i < list.size(); i++ )
-		{
-			//this.plugin.getLogger().info( "List:  (" + list.get(i)[0] + list.get(i)[1] + list.get(i)[2] + ")" );
-			if( ( coords[0] == list.get(i)[0] ) &&
-				( coords[1] == list.get(i)[1] ) &&
-				( coords[2] == list.get(i)[2] ) )
-				return true;
-		}
+		int pos = getPositionOfRepeller( base );
+		
+		if( pos > -1 )
+			return true;
 		
 		return false;
 	}
@@ -108,8 +110,6 @@ public class MobRepellentList
 				FileInputStream fis = new FileInputStream( this.file );
 				BufferedReader buffer = new BufferedReader( new InputStreamReader( fis ) );
 
-				int i = 0;
-				int[] linePos = new int[3];
 				try
 				{
 					String line;
@@ -117,14 +117,49 @@ public class MobRepellentList
 					{
 						String fields[] = line.split( "\\," );
 
-						linePos[ 0 ] = Integer.parseInt( fields[ 0 ] );
-						linePos[ 1 ] = Integer.parseInt( fields[ 1 ] );
-						linePos[ 2 ] = Integer.parseInt( fields[ 2 ] );
+						try
+						{
+							int x = Integer.parseInt( fields[ 0 ] );
+							int y = Integer.parseInt( fields[ 1 ] );
+							int z = Integer.parseInt( fields[ 2 ] );
+							String wUID = null;
+							ArrayList<World> worlds = plugin.getWorlds();
+							boolean added = false;
 
-						//this.plugin.getLogger().info(
-						//		"[MobRepellent] A Mob Repellent has been loaded at " + linePos[0] + "," + linePos[1] + "," + linePos[2]  );
-						this.list.add( i, linePos );
-						i++;
+							// Try to load the world, otherwise, this may be an old save file
+							if( fields.length >= 4 )
+							{
+								wUID = fields[ 3 ];
+							}
+								
+							for( int i = 0; i < worlds.size(); i++ )
+							{
+								// If the file has a world, find the world with the UID and add it
+								// otherwise, try to find a world that has a repeller at this position and
+								// add that instead
+								if( ( (wUID != null ) &&
+									worlds.get(i).getUID().toString().equals( wUID ) ) ||
+									MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ) ) )
+								{
+									if( !this.contains( worlds.get(i).getBlockAt( x, y, z ) ) )
+									{
+										list.add( worlds.get(i).getBlockAt( x, y, z ) );
+										added = true;
+										break;
+									}
+								}
+							}
+							
+							// If no block or world was found that matches the repeller list
+							if( !added )
+							{
+								plugin.getLogger().info( "[MobRepellent] Error loading a repeller from the save file. Removing entry." );
+							}
+						}
+						catch( Exception e )
+						{
+							plugin.getLogger().info( "[MobRepellent] Error loading a repeller from the save file. Removing entry." );
+						}
 					}
 				}
 				catch( IOException e )
@@ -155,8 +190,9 @@ public class MobRepellentList
 
 			for( int i = 0; i < this.list.size(); i++ )
 			{
-				int[] tabLine = (int[]) this.list.get( i );
-				fw.write( tabLine[ 0 ] + "," + tabLine[ 1 ] + "," + tabLine[ 2 ] + "\n" );
+				Block r = this.list.get( i );
+				
+				fw.write( r.getX() + "," + r.getY() + "," + r.getZ() + "," + r.getWorld().getUID() + "\n" );
 			}
 			fw.close();
 		}
