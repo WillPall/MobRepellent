@@ -14,7 +14,7 @@ public class MobRepellentConfiguration
 		this.config = plugin.getConfiguration();
 		config.load();
 		
-		this.plugin.getLogger().info( "[Mob Repellent] Config loaded with radius: '" + getRadius() + "', block: '" + getBlockType().toString() + "'" );
+		//this.plugin.getLogger().info( "[Mob Repellent] Config loaded with radius: '" + getRadius() + "', block: '" + getBlockType().toString() + "'" );
 	}
 	
 	public void setDefaults()
