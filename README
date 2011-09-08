@@ -45,6 +45,7 @@ MobRepellent v0.3 - a Bukkit plugin
     Version 0.3
         - Added configuration file with support for selecting repel radius
           and repeller block type
+        - Lowered default radius from 100 blocks to 50 blocks
 
     Version 0.2
         - Added multi-world support (WOOHOO!)
