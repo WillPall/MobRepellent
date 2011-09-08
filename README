@@ -1,4 +1,4 @@
-MobRepellent v0.2 - a Bukkit plugin
+MobRepellent v0.3 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -18,26 +18,33 @@ MobRepellent v0.2 - a Bukkit plugin
     place the remaining two diamond blocks directly above the block in the
     center of the plus sign.
 
-    After the repeller is constructed, no hostile mobs will spawn within a 200-
+    After the repeller is constructed, no hostile mobs will spawn within a 100-
     block cube of the base of the repeller. To remove the repeller, simply
-    remove one of the diamond blocks that is part of the repeller.
+    remove one of the blocks that is part of the repeller.
 
-* Known issues
+* Configuring MobRepellent
 
-    - The 200-block cube is a little too large for most needs. This will be
-      fixed with the introduction of the configuration file.
+    You can configure MobRepellent to use almost any block type instead of
+    diamond blocks. You can also configure MobRepellent to use any size radius
+    to repel mobs. On the first run of the plugin, MobRepellent will
+    automatically create a config.yml file with the default values. See the
+    sample config.yml file for more information:
+    
+    https://github.com/WillPall/MobRepellent/raw/master/docs/config.yml
 
 * Todo list
 
     - Add Permissions support
-    - Add configuration file (config.yml)
-    - Add configuration option to select block type for repellers
-    - Add configuration option to define distance to repel mobs
     - Add options for creating multiple strength repellers (ie. a repeller
       constructed out of iron blocks that repels for a smaller amount than a
       repeller constructed of diamond blocks)
+    - Add configuration option to also block neutral mobs from spawning
 
 * Changelog
+
+    Version 0.3
+        - Added configuration file with support for selecting repel radius
+          and repeller block type
 
     Version 0.2
         - Added multi-world support (WOOHOO!)

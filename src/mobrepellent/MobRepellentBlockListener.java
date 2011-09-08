@@ -11,17 +11,19 @@ import org.bukkit.event.block.BlockPlaceEvent;
 public class MobRepellentBlockListener extends BlockListener
 {
 	private MobRepellent plugin;
+	private Material repellerMaterial;
 
 	public MobRepellentBlockListener( MobRepellent instance )
 	{
 		this.plugin = instance;
+		repellerMaterial = this.plugin.getConfig().getBlockType();
 	}
 
 	public void onBlockPlace( BlockPlaceEvent event )
 	{
 		Block block = event.getBlock();
 
-		if( block.getType() == Material.DIAMOND_BLOCK )
+		if( block.getType() == repellerMaterial )
 		{
 			ArrayList<Block> blockSet = getAdjacentRepellerBlocks( block );
 			
@@ -43,7 +45,7 @@ public class MobRepellentBlockListener extends BlockListener
 	{
 		Block block = event.getBlock();
 
-		if( block.getType() == Material.DIAMOND_BLOCK )	
+		if( block.getType() == repellerMaterial )	
 			removeBrokenRepellers( block );
 	}
 
@@ -111,32 +113,32 @@ public class MobRepellentBlockListener extends BlockListener
 
 		// TODO: this algorithm seems very hacky. must be a better way to determine
 		//		 all adjacent blocks
-		if( ( currentWorld.getBlockAt( x + 1, y, z ).getType() == Material.DIAMOND_BLOCK ) &&
+		if( ( currentWorld.getBlockAt( x + 1, y, z ).getType() == repellerMaterial ) &&
 			( !blockSet.contains( currentWorld.getBlockAt( x + 1, y, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x + 1, y, z ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x - 1, y, z ).getType() == Material.DIAMOND_BLOCK ) &&
+		if( ( currentWorld.getBlockAt( x - 1, y, z ).getType() == repellerMaterial ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x - 1, y, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x - 1, y, z ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x, y + 1, z ).getType() == Material.DIAMOND_BLOCK ) &&
+		if( ( currentWorld.getBlockAt( x, y + 1, z ).getType() == repellerMaterial ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y + 1, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y + 1, z ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x, y - 1, z ).getType() == Material.DIAMOND_BLOCK ) &&
+		if( ( currentWorld.getBlockAt( x, y - 1, z ).getType() == repellerMaterial ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y - 1, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y - 1, z ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x, y, z + 1 ).getType() == Material.DIAMOND_BLOCK ) &&
+		if( ( currentWorld.getBlockAt( x, y, z + 1 ).getType() == repellerMaterial ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y, z + 1 ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y, z + 1 ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x, y, z - 1 ).getType() == Material.DIAMOND_BLOCK ) &&
+		if( ( currentWorld.getBlockAt( x, y, z - 1 ).getType() == repellerMaterial ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y, z - 1 ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y, z - 1 ), blockSet );
@@ -149,7 +151,7 @@ public class MobRepellentBlockListener extends BlockListener
 		
 		for( int i = 0; i < blockSet.size(); i++ )
 		{
-			if( MobRepellent.isBaseOfRepeller( blockSet.get( i ) ) )
+			if( MobRepellent.isBaseOfRepeller( blockSet.get( i ), repellerMaterial ) )
 				repellerBlocks.add( blockSet.get( i ) );
 		}
 		

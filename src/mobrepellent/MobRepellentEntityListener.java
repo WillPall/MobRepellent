@@ -23,8 +23,8 @@ public class MobRepellentEntityListener extends EntityListener
 		
 		if( plugin.getRepellerList().isRepelled( loc.getX(), loc.getY(), loc.getZ(), loc.getWorld() ) )
 		{
-			//this.plugin.getLogger().info(
-			//		"[MobRepellent] A mob has been repelled at " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + loc.getWorld().getName()  );
+			this.plugin.getLogger().info(
+					"[MobRepellent] A mob has been repelled at " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + loc.getWorld().getName()  );
 			event.setCancelled( true );
 		}
 	}

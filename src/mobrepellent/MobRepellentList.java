@@ -27,13 +27,17 @@ public class MobRepellentList
 		load();
 	}
 	
-	public boolean isRepelled( double x, double y, double z, World world )
+	// TODO: two methods may be unnecessary since the radius is
+	//		 now pulled from the config file.
+	/*public boolean isRepelled( double x, double y, double z, World world )
 	{
 		return isRepelled( x, y, z, world, 100 );
-	}
+	}*/
 	
-	public boolean isRepelled( double x, double y, double z, World world, int radius )
+	public boolean isRepelled( double x, double y, double z, World world )
 	{
+		int radius = plugin.getConfig().getRadius();
+		
 		for( int i = 0; i < list.size(); i++ )
 		{
 			if( ( ( list.get(i).getX() - radius ) < x ) && ( ( list.get(i).getX() + radius ) > x ) &&
@@ -139,9 +143,13 @@ public class MobRepellentList
 								// add that instead
 								if( ( (wUID != null ) &&
 									worlds.get(i).getUID().toString().equals( wUID ) ) ||
-									MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ) ) )
+									MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig().getBlockType() ) )
 								{
-									if( !this.contains( worlds.get(i).getBlockAt( x, y, z ) ) )
+									// TODO: this is hacky. The repeller loaded from the file must equal the block type
+									//		 loaded from the config. However, block type is sometimes checked in the above
+									//		 conditional because of backwards compatibility. Find a better way to do this.
+									if( !this.contains( worlds.get(i).getBlockAt( x, y, z ) ) &&
+										MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig().getBlockType() ) )
 									{
 										list.add( worlds.get(i).getBlockAt( x, y, z ) );
 										added = true;
