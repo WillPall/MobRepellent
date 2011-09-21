@@ -112,8 +112,13 @@ public class MobRepellentList
 				try
 				{
 					String line;
+					int lineNum = 0;
 					while( ( line = buffer.readLine() ) != null )
 					{
+						lineNum++;
+						if( line.trim() == "" )
+							continue;
+						
 						String fields[] = line.split( "\\," );
 
 						try
@@ -156,18 +161,22 @@ public class MobRepellentList
 							// If no block or world was found that matches the repeller list
 							if( !added )
 							{
-								plugin.getLogger().info( "[MobRepellent] Error loading a repeller from the save file. Removing entry." );
+								plugin.getLogger().info( "[MobRepellent] No repeller was found that matches entry on line " + lineNum + ". Ignoring entry." );
 							}
 						}
-						catch( Exception e )
+						catch( NumberFormatException nfe )
 						{
-							plugin.getLogger().info( "[MobRepellent] Error loading a repeller from the save file. Removing entry." );
+							plugin.getLogger().info( "[MobRepellent] Malformed repeller entry on line " + lineNum + ". Ignoring entry." );
 						}
 					}
 				}
 				catch( IOException e )
 				{
-					e.printStackTrace();
+					plugin.getLogger().info( "[MobRepellent] Error reading from 'repellers.list'. Aborting load." );
+					//e.printStackTrace();
+					
+					// return so that we don't overwrite a possibly fine repellers.list
+					return;
 				}
 			}
 			catch( FileNotFoundException e )
@@ -179,6 +188,8 @@ public class MobRepellentList
 		{
 			this.plugin.getLogger().info( "[MobRepellent] No repeller file was found. Creating new file." );
 		}
+		
+		save();
 	}
 
 	private void save()

@@ -3,6 +3,7 @@ package mobrepellent;
 import org.bukkit.Location;
 import org.bukkit.entity.Animals;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityListener;
 
 public class MobRepellentEntityListener extends EntityListener
@@ -17,7 +18,8 @@ public class MobRepellentEntityListener extends EntityListener
 	public void onCreatureSpawn( CreatureSpawnEvent event )
 	{
 		if( !plugin.getConfig().shouldRepelNeutralMobs() &&
-			( event.getEntity() instanceof Animals ) )
+			( event.getEntity() instanceof Animals ) &&
+			( event.getSpawnReason() != SpawnReason.EGG ) )
 			return;
 
 		Location loc = event.getLocation();
