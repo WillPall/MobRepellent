@@ -1,6 +1,8 @@
 package mobrepellent;
 
 import java.util.ArrayList;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -11,19 +13,17 @@ import org.bukkit.event.block.BlockPlaceEvent;
 public class MobRepellentBlockListener extends BlockListener
 {
 	private MobRepellent plugin;
-	private Material repellerMaterial;
 
 	public MobRepellentBlockListener( MobRepellent instance )
 	{
 		this.plugin = instance;
-		repellerMaterial = this.plugin.getConfig().getBlockType();
 	}
 
 	public void onBlockPlace( BlockPlaceEvent event )
 	{
 		Block block = event.getBlock();
 
-		if( block.getType() == repellerMaterial )
+		if( plugin.getConfig().getRadius( block.getType() ) != -1 )
 		{
 			ArrayList<Block> blockSet = getAdjacentRepellerBlocks( block );
 			
@@ -36,6 +36,7 @@ public class MobRepellentBlockListener extends BlockListener
 							"[MobRepellent] A new repeller was constructed by " + event.getPlayer().getName() + " at ("
 									+ blockSet.get( i ).getX() + "," + blockSet.get( i ).getY() + ","
 									+ blockSet.get( i ).getZ() + ")" );
+					event.getPlayer().sendMessage( ChatColor.GREEN + "You've constructed a " + ChatColor.YELLOW + plugin.getConfig().getStrength( blockSet.get( i ) ).toString() + ChatColor.GREEN + " MobRepeller!" );
 				}
 			}
 		}
@@ -45,46 +46,59 @@ public class MobRepellentBlockListener extends BlockListener
 	{
 		Block block = event.getBlock();
 
-		if( block.getType() == repellerMaterial )	
-			removeBrokenRepellers( block );
+		if( plugin.getConfig().getRadius( block.getType() ) != -1 )
+		{
+			if( removeBrokenRepellers( block ) )
+				event.getPlayer().sendMessage( ChatColor.RED + "You've destroyed a MobRepeller!" );
+		}
 	}
 
-	private void removeBrokenRepellers( Block block )
+	private boolean removeBrokenRepellers( Block block )
 	{
 		World w = block.getWorld();
 		MobRepellentList rlist = plugin.getRepellerList();
 		int x = block.getX();
 		int y = block.getY();
 		int z = block.getZ();
+		boolean removed = false;
 		
 		if( rlist.contains( w.getBlockAt( x + 1, y, z ) ) )
 		{
-			rlist.remove( w.getBlockAt( x + 1, y, z ) );
+			if( rlist.remove( w.getBlockAt( x + 1, y, z ) ) )
+				removed = true;
 		}
 		if( rlist.contains( w.getBlockAt( x - 1, y, z ) ) )
 		{
-			rlist.remove( w.getBlockAt( x - 1, y, z ) );
+			if( rlist.remove( w.getBlockAt( x - 1, y, z ) ) )
+				removed = true;
 		}
 		if( rlist.contains( w.getBlockAt( x, y - 1, z ) ) )
 		{
-			rlist.remove( w.getBlockAt( x, y - 1, z ) );
+			if( rlist.remove( w.getBlockAt( x, y - 1, z ) ) )
+				removed = true;
 		}
 		if( rlist.contains( w.getBlockAt( x, y - 2, z ) ) )
 		{
-			rlist.remove( w.getBlockAt( x, y - 2, z ) );
+			if( rlist.remove( w.getBlockAt( x, y - 2, z ) ) )
+				removed = true;
 		}
 		if( rlist.contains( w.getBlockAt( x, y, z + 1 ) ) )
 		{
-			rlist.remove( w.getBlockAt( x, y, z + 1 ) );
+			if( rlist.remove( w.getBlockAt( x, y, z + 1 ) ) )
+				removed = true;
 		}
 		if( rlist.contains( w.getBlockAt( x, y, z - 1 ) ) )
 		{
-			rlist.remove( w.getBlockAt( x, y, z - 1 ) );
+			if( rlist.remove( w.getBlockAt( x, y, z - 1 ) ) )
+				removed = true;
 		}
 		if( rlist.contains( block ) )
 		{
-			rlist.remove( block );
+			if( rlist.remove( block ) )
+				removed = true;
 		}
+
+		return removed;
 	}
 	
 	private ArrayList<Block> getAdjacentRepellerBlocks( Block block )
@@ -113,32 +127,32 @@ public class MobRepellentBlockListener extends BlockListener
 
 		// TODO: this algorithm seems very hacky. must be a better way to determine
 		//		 all adjacent blocks
-		if( ( currentWorld.getBlockAt( x + 1, y, z ).getType() == repellerMaterial ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x + 1, y, z ).getType() ) != -1 ) &&
 			( !blockSet.contains( currentWorld.getBlockAt( x + 1, y, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x + 1, y, z ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x - 1, y, z ).getType() == repellerMaterial ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x - 1, y, z ).getType() ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x - 1, y, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x - 1, y, z ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x, y + 1, z ).getType() == repellerMaterial ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y + 1, z ).getType() ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y + 1, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y + 1, z ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x, y - 1, z ).getType() == repellerMaterial ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y - 1, z ).getType() ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y - 1, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y - 1, z ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x, y, z + 1 ).getType() == repellerMaterial ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y, z + 1 ).getType() ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y, z + 1 ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y, z + 1 ), blockSet );
 		}
-		if( ( currentWorld.getBlockAt( x, y, z - 1 ).getType() == repellerMaterial ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y, z - 1 ).getType() ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y, z - 1 ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y, z - 1 ), blockSet );
@@ -151,7 +165,7 @@ public class MobRepellentBlockListener extends BlockListener
 		
 		for( int i = 0; i < blockSet.size(); i++ )
 		{
-			if( MobRepellent.isBaseOfRepeller( blockSet.get( i ), repellerMaterial ) )
+			if( MobRepellent.isBaseOfRepeller( blockSet.get( i ), plugin.getConfig() ) )
 				repellerBlocks.add( blockSet.get( i ) );
 		}
 		

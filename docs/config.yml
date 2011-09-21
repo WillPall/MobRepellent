@@ -1,13 +1,16 @@
 # MobRepellent Configuration
 
-# The 'radius' value allows you to set the radius from the base of the repeller
-# that mobs will be repelled.
+# The '*_radius' values allow you to set the radius from the base of the 
+# repeller that mobs will be repelled.
 #
-# Ex: 'radius: 50' will repel mobs a radius of 50 blocks from the base.
-#     In other words, it will repel in a 100 block cube around the repeller.
-radius: 50
+# Ex: 'large_radius: 50' will repel mobs a radius of 50 blocks from the base of
+#     the large repeller. In other words, it will repel in a 100 block cube 
+#     around the repeller.
+small_radius: 20
+medium_radius: 30
+large_radius: 50
 
-# The 'block_id' value sets the block data value to use for the repeller
+# The '*_id' value sets the block data value to use for the repeller
 # material. Certain blocks are not allowed because of gameplay/performance
 # issues. If one of the forbidden blocks is defined, the plugin will default
 # to diamond blocks.
@@ -20,4 +23,10 @@ radius: 50
 # in the mountain and every stone block adjacent to the mountain to be
 # confused for a repeller. This causes massive performance issues and could
 # cause mobs to become very very scarce.
-block_id: 57
+small_id: 42
+medium_id: 41
+large_id: 57
+
+# This sets whether to repel neutral mobs as well as hostile mobs. Values
+# allowed are 'true' or 'false'
+repel_neutral_mobs: false

@@ -6,12 +6,12 @@ import org.bukkit.block.Block;
 public class MobRepeller
 {
 	private Block base;
-	private World world;
+	private MobRepellerStrength strength;
 	
-	public MobRepeller( Block base )
+	public MobRepeller( Block base, MobRepellerStrength strength )
 	{
 		this.base = base;
-		this.world = base.getWorld();
+		this.strength = strength;
 	}
 	
 	public void setBase( Block base )
@@ -24,19 +24,19 @@ public class MobRepeller
 		return base;
 	}
 	
-	public void setWorld( World world )
-	{
-		this.world = world;
-	}
-	
 	public World getWorld()
 	{
-		return world;
+		return base.getWorld();
+	}
+	
+	public MobRepellerStrength getStrength()
+	{
+		return strength;
 	}
 	
 	public String toString()
 	{
-		String str = base.getX() + "," + base.getY() + "," + base.getZ() + "," + world.getUID();
+		String str = base.getX() + "," + base.getY() + "," + base.getZ() + "," + base.getWorld().getUID();
 		
 		return str;
 	}

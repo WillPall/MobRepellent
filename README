@@ -1,4 +1,4 @@
-MobRepellent v0.3 - a Bukkit plugin
+MobRepellent v0.4 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -12,20 +12,25 @@ MobRepellent v0.3 - a Bukkit plugin
     Simply drag MobRepellent.jar into your Bukkit /plugins directory.
     MobRepellent will automatically create all the necessary files.
 
-    Once the plugin is loaded, to create a repeller you'll need 7 diamond
-    blocks (not diamond gems). First, using five diamond blocks, construct a
-    shape that looks like a plus sign (+) parallel with the ground. Next,
-    place the remaining two diamond blocks directly above the block in the
-    center of the plus sign.
+    Once the plugin is loaded, to create a repeller you'll need 7 iron,
+    gold, or diamond blocks. First, using five blocks, construct a shape
+    that looks like a plus sign (+) parallel with the ground. Next, place the
+    remaining two diamond blocks directly above the block in the center of the
+    plus sign.
 
-    After the repeller is constructed, no hostile mobs will spawn within a 100-
-    block cube of the base of the repeller. To remove the repeller, simply
+    After the repeller is constructed, no hostile mobs will spawn within the
+    radius of the base of the repeller. To remove the repeller, simply
     remove one of the blocks that is part of the repeller.
+    
+    Default repeller types and radii:
+        - Small - Iron block - 20 block radius
+        - Medium - Gold block - 30 block radius
+        - Large - Diamond block - 50 block radius
 
 * Configuring MobRepellent
 
     You can configure MobRepellent to use almost any block type instead of
-    diamond blocks. You can also configure MobRepellent to use any size radius
+    the default blocks. You can also configure MobRepellent to use any radius
     to repel mobs. On the first run of the plugin, MobRepellent will
     automatically create a config.yml file with the default values. See the
     sample config.yml file for more information:
@@ -35,12 +40,15 @@ MobRepellent v0.3 - a Bukkit plugin
 * Todo list
 
     - Add Permissions support
-    - Add options for creating multiple strength repellers (ie. a repeller
-      constructed out of iron blocks that repels for a smaller amount than a
-      repeller constructed of diamond blocks)
-    - Add configuration option to also block neutral mobs from spawning
+    - Ability to reload configuration file without shutting down the server
+    - Add admin command to list all repellers with their coordinates
 
 * Changelog
+
+    Version 0.4
+        - Added support for multiple repeller types with different radii.
+        - Added option to also repel neutral mobs (default: false)
+        - Added notification when creating or destroying a repeller
 
     Version 0.3
         - Added configuration file with support for selecting repel radius
@@ -59,7 +67,7 @@ MobRepellent v0.3 - a Bukkit plugin
 
     I don't really feel like including all kinds of crazy license info or
     requiring any derivatives to use a specific license. I'm lazy, so I hereby
-    relenquish all copyrights and any other rights to this software and the
+    relinquish all copyrights and any other rights to this software and the
     source material. Do what you want with it. If you use any of this in one of
     your own projects (although I can't see why you would), send me an email.
     I'd love to hear about it.

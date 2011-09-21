@@ -16,7 +16,8 @@ public class MobRepellentEntityListener extends EntityListener
 	
 	public void onCreatureSpawn( CreatureSpawnEvent event )
 	{
-		if( ( event.getEntity() instanceof Animals ) )
+		if( !plugin.getConfig().shouldRepelNeutralMobs() &&
+			( event.getEntity() instanceof Animals ) )
 			return;
 
 		Location loc = event.getLocation();

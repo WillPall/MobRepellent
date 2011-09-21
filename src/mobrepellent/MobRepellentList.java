@@ -16,34 +16,28 @@ public class MobRepellentList
 {
 	private File file;
 	//private ArrayList<int[]> list;
-	private ArrayList<Block> list;
+	private ArrayList<MobRepeller> list;
 	private MobRepellent plugin;
 
 	public MobRepellentList( String workingDir, MobRepellent plugin )
 	{
 		this.plugin = plugin;
 		this.file = new File( workingDir + "repellers.list" );
-		this.list = new ArrayList<Block>();
+		this.list = new ArrayList<MobRepeller>();
 		load();
 	}
 	
-	// TODO: two methods may be unnecessary since the radius is
-	//		 now pulled from the config file.
-	/*public boolean isRepelled( double x, double y, double z, World world )
-	{
-		return isRepelled( x, y, z, world, 100 );
-	}*/
-	
 	public boolean isRepelled( double x, double y, double z, World world )
-	{
-		int radius = plugin.getConfig().getRadius();
-		
+	{	
 		for( int i = 0; i < list.size(); i++ )
 		{
-			if( ( ( list.get(i).getX() - radius ) < x ) && ( ( list.get(i).getX() + radius ) > x ) &&
-				( ( list.get(i).getY() - radius ) < y ) && ( ( list.get(i).getY() + radius ) > y ) &&
-				( ( list.get(i).getZ() - radius ) < z ) && ( ( list.get(i).getZ() + radius ) > z ) &&
-				( ( list.get(i).getWorld().getUID().equals( world.getUID() ) ) ) )
+			Block base = list.get( i ).getBase();
+			int radius = plugin.getConfig().getRadius( base );
+			
+			if( ( ( base.getX() - radius ) < x ) && ( ( base.getX() + radius ) > x ) &&
+				( ( base.getY() - radius ) < y ) && ( ( base.getY() + radius ) > y ) &&
+				( ( base.getZ() - radius ) < z ) && ( ( base.getZ() + radius ) > z ) &&
+				( ( base.getWorld().getUID().equals( world.getUID() ) ) ) )
 				return true;
 		}
 		
@@ -52,7 +46,8 @@ public class MobRepellentList
 	
 	public void add( Block block )
 	{
-		this.list.add( block );
+		MobRepeller newRepeller = new MobRepeller( block, plugin.getConfig().getStrength( block ) );
+		this.list.add( newRepeller );
 		save();
 	}
 	
@@ -81,7 +76,7 @@ public class MobRepellentList
 	{
 		for( int i = 0; i < list.size(); i++ )
 		{
-			Block cur = list.get( i );
+			Block cur = list.get( i ).getBase();
 			
 			if( ( cur.getX() == base.getX() ) &&
 				( cur.getY() == base.getY() ) &&
@@ -143,15 +138,15 @@ public class MobRepellentList
 								// add that instead
 								if( ( (wUID != null ) &&
 									worlds.get(i).getUID().toString().equals( wUID ) ) ||
-									MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig().getBlockType() ) )
+									MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() ) )
 								{
 									// TODO: this is hacky. The repeller loaded from the file must equal the block type
 									//		 loaded from the config. However, block type is sometimes checked in the above
 									//		 conditional because of backwards compatibility. Find a better way to do this.
 									if( !this.contains( worlds.get(i).getBlockAt( x, y, z ) ) &&
-										MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig().getBlockType() ) )
+										MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() ) )
 									{
-										list.add( worlds.get(i).getBlockAt( x, y, z ) );
+										list.add( new MobRepeller( worlds.get(i).getBlockAt( x, y, z ), plugin.getConfig().getStrength( worlds.get(i).getBlockAt( x, y, z ) ) ) );
 										added = true;
 										break;
 									}
@@ -198,9 +193,9 @@ public class MobRepellentList
 
 			for( int i = 0; i < this.list.size(); i++ )
 			{
-				Block r = this.list.get( i );
+				MobRepeller r = this.list.get( i );
 				
-				fw.write( r.getX() + "," + r.getY() + "," + r.getZ() + "," + r.getWorld().getUID() + "\n" );
+				fw.write( r.toString() + "\n" );
 			}
 			fw.close();
 		}

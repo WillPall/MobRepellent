@@ -79,19 +79,19 @@ public class MobRepellent extends JavaPlugin
 		return worlds;
 	}
 	
-	public static boolean isBaseOfRepeller( Block block, Material repellerMaterial )
+	public static boolean isBaseOfRepeller( Block block, MobRepellentConfiguration configuration )
 	{
 		World w = block.getWorld();
 		int x = block.getX();
 		int y = block.getY();
 		int z = block.getZ();
 		
-		if( ( w.getBlockAt( x, y + 1, z ).getType() == repellerMaterial ) &&
-			( w.getBlockAt( x, y + 2, z ).getType() == repellerMaterial ) &&
-			( w.getBlockAt( x + 1, y, z ).getType() == repellerMaterial ) &&
-			( w.getBlockAt( x - 1, y, z ).getType() == repellerMaterial ) &&
-			( w.getBlockAt( x, y, z + 1 ).getType() == repellerMaterial ) &&
-			( w.getBlockAt( x, y, z - 1 ).getType() == repellerMaterial ) )
+		if( ( configuration.getRadius( w.getBlockAt( x, y + 1, z ).getType() ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x, y + 2, z ).getType() ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x + 1, y, z ).getType() ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x - 1, y, z ).getType() ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x, y, z + 1 ).getType() ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x, y, z - 1 ).getType() ) != -1 ) )
 			return true;
 		
 		return false;
