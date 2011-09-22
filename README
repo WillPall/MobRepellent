@@ -19,8 +19,8 @@ MobRepellent v0.4.1 - a Bukkit plugin
     plus sign.
 
     After the repeller is constructed, no hostile mobs will spawn within the
-    radius of the base of the repeller. To remove the repeller, simply
-    remove one of the blocks that is part of the repeller.
+    spherical radius of the base of the repeller. To remove the repeller,
+    simply remove one of the blocks that is part of the repeller.
     
     Default repeller types and radii:
         - Small - Iron block - 20 block radius
