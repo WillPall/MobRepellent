@@ -17,17 +17,14 @@ public class MobRepellent extends JavaPlugin
 	private MobRepellentList repellers;
 	private ArrayList<World> worlds;
 	private MobRepellentConfiguration config;
+	private int delayLoadTask;
 
 	public void onEnable()
 	{
 		// Config is needed before anything else
 		config = new MobRepellentConfiguration( this );
 		
-		MobRepellentEntityListener entityListener = new MobRepellentEntityListener( this );
-		MobRepellentBlockListener blockListener = new MobRepellentBlockListener( this );
-		
 		worlds = (ArrayList<World>) getServer().getWorlds();
-		repellers = new MobRepellentList( "plugins/MobRepellent/", this );
 		
 		// Set up the default config, if one doesn't exist
 		File configFile = new File( "plugins/MobRepellent/config.yml" );
@@ -43,12 +40,17 @@ public class MobRepellent extends JavaPlugin
 			this.log.info( "[MobRepellent] Folder not found, creating new one." );
 		}
 
-		getServer().getPluginManager().registerEvent( Event.Type.CREATURE_SPAWN, entityListener, Event.Priority.Normal,
-				this );
-		getServer().getPluginManager().registerEvent( Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal,
-				this );
-		getServer().getPluginManager().registerEvent( Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal,
-				this );
+		// TODO: fix this to delay loading based on configuration
+		repellers = new MobRepellentList( "plugins/MobRepellent/", this, true );
+		
+		if( repellers.isLoaded() )
+		{
+			loadPlugin();
+		}
+		else
+		{
+			delayLoadTask = getServer().getScheduler().scheduleSyncDelayedTask( this, new MobRepellentDelayLoadRunnable( this ) );
+		}
 
 		PluginDescriptionFile description = getDescription();
 		getServer().getLogger().info( description.getName() + " (v" + description.getVersion() + ") is enabled!" );
@@ -57,6 +59,33 @@ public class MobRepellent extends JavaPlugin
 	public void onDisable()
 	{
 		config.save();
+	}
+	
+	public void loadPlugin()
+	{
+		loadPlugin( false );
+	}
+	
+	public void loadPlugin( boolean delayed )
+	{	
+		if( delayed )
+		{
+			getServer().getScheduler().cancelTask( delayLoadTask );
+			// reload worlds, just in case
+			worlds = (ArrayList<World>) getServer().getWorlds();
+			repellers.load();
+		}
+			
+		
+		MobRepellentEntityListener entityListener = new MobRepellentEntityListener( this );
+		MobRepellentBlockListener blockListener = new MobRepellentBlockListener( this );
+	
+		getServer().getPluginManager().registerEvent( Event.Type.CREATURE_SPAWN, entityListener, Event.Priority.Normal,
+				this );
+		getServer().getPluginManager().registerEvent( Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal,
+				this );
+		getServer().getPluginManager().registerEvent( Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal,
+				this );
 	}
 	
 	public MobRepellentConfiguration getConfig()

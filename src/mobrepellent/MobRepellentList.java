@@ -18,17 +18,37 @@ public class MobRepellentList
 	//private ArrayList<int[]> list;
 	private ArrayList<MobRepeller> list;
 	private MobRepellent plugin;
+	
+	// TODO: maybe this will work, maybe it should be redone
+	// keeps track of whether we've loaded the repellers
+	private boolean loaded;
 
-	public MobRepellentList( String workingDir, MobRepellent plugin )
+	public MobRepellentList( String workingDir, MobRepellent plugin, boolean delayLoad )
 	{
 		this.plugin = plugin;
 		this.file = new File( workingDir + "repellers.list" );
 		this.list = new ArrayList<MobRepeller>();
-		load();
+		this.loaded = false;
+		
+		if( !delayLoad )
+			load();
+	}
+	
+	public MobRepellentList( String workingDir, MobRepellent plugin )
+	{
+		this( workingDir, plugin, false );
+	}
+	
+	public boolean isLoaded()
+	{
+		return loaded;
 	}
 	
 	public boolean isRepelled( double x, double y, double z, World world )
 	{	
+		if( !loaded )
+			return false;
+		
 		for( int i = 0; i < list.size(); i++ )
 		{
 			Block base = list.get( i ).getBase();
@@ -46,6 +66,9 @@ public class MobRepellentList
 	
 	public void add( Block block )
 	{
+		if( !loaded )
+			return;
+		
 		MobRepeller newRepeller = new MobRepeller( block, plugin.getConfig().getStrength( block ) );
 		this.list.add( newRepeller );
 		save();
@@ -53,6 +76,9 @@ public class MobRepellentList
 	
 	public boolean remove( Block base )
 	{
+		if( !loaded )
+			return false;
+		
 		int pos = getPositionOfRepeller( base );
 		
 		if( pos > -1 )
@@ -74,6 +100,9 @@ public class MobRepellentList
 	 */
 	private int getPositionOfRepeller( Block base )
 	{
+		if( !loaded )
+			return -1;
+		
 		for( int i = 0; i < list.size(); i++ )
 		{
 			Block cur = list.get( i ).getBase();
@@ -92,6 +121,9 @@ public class MobRepellentList
 	
 	public boolean contains( Block base )
 	{
+		if( !loaded )
+			return false;
+		
 		int pos = getPositionOfRepeller( base );
 		
 		if( pos > -1 )
@@ -100,7 +132,7 @@ public class MobRepellentList
 		return false;
 	}
 
-	private void load()
+	protected void load()
 	{
 		if( this.file.exists() )
 		{
@@ -188,12 +220,21 @@ public class MobRepellentList
 		{
 			this.plugin.getLogger().info( "[MobRepellent] No repeller file was found. Creating new file." );
 		}
-		
+
+		if( list.size() > 0 )
+			this.plugin.getLogger().info( "[MobRepellent] Finished loading plugin." );
+		else
+			this.plugin.getLogger().info( "[MobRepellent] Finished loading plugin. No repellers were loaded." );
+			
+		this.loaded = true;
 		save();
 	}
 
 	private void save()
 	{
+		if( !loaded )
+			return;
+		
 		try
 		{
 			if( this.file.exists() )
