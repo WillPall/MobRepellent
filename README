@@ -45,6 +45,11 @@ MobRepellent v0.4.1 - a Bukkit plugin
 
 * Changelog
 
+    Version 0.4.2
+        - Added delay to loading repellers until all other plugins have
+          loaded. Hopefully this will solve any problems with the plugin
+          looking for repellers in worlds that haven't been loaded.
+          
     Version 0.4.1
         - Possible bug fix for loading/saving repellers
         - Allow spawning chickens from eggs, even if neutral mobs are blocked
