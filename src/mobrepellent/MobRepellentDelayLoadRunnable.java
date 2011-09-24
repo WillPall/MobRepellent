@@ -12,6 +12,6 @@ public class MobRepellentDelayLoadRunnable implements Runnable
     @Override
     public void run()
     {
-        plugin.loadPlugin( true );
+        plugin.loadPlugin();
     }
 }

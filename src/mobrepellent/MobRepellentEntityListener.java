@@ -17,17 +17,23 @@ public class MobRepellentEntityListener extends EntityListener
 	
 	public void onCreatureSpawn( CreatureSpawnEvent event )
 	{
-		if( !plugin.getConfig().shouldRepelNeutralMobs() &&
+		if( event.isCancelled() ||
+			
+			( !plugin.getConfig().shouldRepelNeutralMobs() &&
 			( event.getEntity() instanceof Animals ) &&
-			( event.getSpawnReason() != SpawnReason.EGG ) )
+			( event.getSpawnReason() == SpawnReason.EGG ) ) )
 			return;
 
 		Location loc = event.getLocation();
 		
 		if( plugin.getRepellerList().isRepelled( loc.getX(), loc.getY(), loc.getZ(), loc.getWorld() ) )
 		{
-			//this.plugin.getLogger().info(
-			//		"[MobRepellent] A mob has been repelled at " + loc.getX() + "," + loc.getY() + "," + loc.getZ() + "," + loc.getWorld().getName()  );
+			if( plugin.getConfig().getDebugMode() )
+			{
+				int num = plugin.getRepellerList().getRepelledBaseId( loc.getX(), loc.getY(), loc.getZ(), loc.getWorld() );
+				this.plugin.debug( "[MobRepellent] Repelled by #" + num + ": " + Math.round( loc.getX() ) + ", " + Math.round( loc.getY() ) + ", " + Math.round( loc.getZ() ) + ", " + loc.getWorld().getName() );
+			}
+			
 			event.setCancelled( true );
 		}
 	}

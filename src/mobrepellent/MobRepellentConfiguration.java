@@ -14,8 +14,13 @@ public class MobRepellentConfiguration
 		this.plugin = plugin;
 		this.config = plugin.getConfiguration();
 		config.load();
-		
-		//this.plugin.getLogger().info( "[Mob Repellent] Config loaded with radius: '" + getRadius() + "', block: '" + getBlockType().toString() + "'" );
+	}
+	
+	public void reload()
+	{
+		this.config = plugin.getConfiguration();
+		this.config.load();
+		plugin.reloadRepellers();
 	}
 	
 	public void setDefaults()
@@ -34,12 +39,19 @@ public class MobRepellentConfiguration
 	
 	public void save()
 	{
+		if( config.getBoolean( "debug_mode", false ) == false )
+			config.removeProperty( "debug_mode" );
 		config.save();
 	}
 	
 	public boolean shouldRepelNeutralMobs()
 	{
 		return config.getBoolean( "repel_neutral_mobs", false );
+	}
+	
+	public boolean getDebugMode()
+	{
+		return config.getBoolean( "debug_mode", false );
 	}
 	
 	public MobRepellerStrength getStrength( Block block )

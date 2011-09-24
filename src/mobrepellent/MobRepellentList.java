@@ -15,40 +15,38 @@ import org.bukkit.block.Block;
 public class MobRepellentList
 {
 	private File file;
-	//private ArrayList<int[]> list;
 	private ArrayList<MobRepeller> list;
 	private MobRepellent plugin;
-	
-	// TODO: maybe this will work, maybe it should be redone
-	// keeps track of whether we've loaded the repellers
-	private boolean loaded;
 
-	public MobRepellentList( String workingDir, MobRepellent plugin, boolean delayLoad )
+	public MobRepellentList( String workingDir, MobRepellent plugin )
 	{
 		this.plugin = plugin;
 		this.file = new File( workingDir + "repellers.list" );
 		this.list = new ArrayList<MobRepeller>();
-		this.loaded = false;
 		
-		if( !delayLoad )
-			load();
+		load();
 	}
 	
-	public MobRepellentList( String workingDir, MobRepellent plugin )
+	// TODO: get rid of this function. this is for debug purposes only
+	public int getRepelledBaseId( double x, double y, double z, World world )
 	{
-		this( workingDir, plugin, false );
-	}
-	
-	public boolean isLoaded()
-	{
-		return loaded;
+		for( int i = 0; i < list.size(); i++ )
+		{
+			Block base = list.get( i ).getBase();
+			int radius = plugin.getConfig().getRadius( base );
+			
+			if( ( ( base.getX() - radius ) < x ) && ( ( base.getX() + radius ) > x ) &&
+				( ( base.getY() - radius ) < y ) && ( ( base.getY() + radius ) > y ) &&
+				( ( base.getZ() - radius ) < z ) && ( ( base.getZ() + radius ) > z ) &&
+				( ( base.getWorld().getUID().equals( world.getUID() ) ) ) )
+				return (i + 1);
+		}
+		
+		return -1;
 	}
 	
 	public boolean isRepelled( double x, double y, double z, World world )
 	{	
-		if( !loaded )
-			return false;
-		
 		for( int i = 0; i < list.size(); i++ )
 		{
 			Block base = list.get( i ).getBase();
@@ -66,9 +64,6 @@ public class MobRepellentList
 	
 	public void add( Block block )
 	{
-		if( !loaded )
-			return;
-		
 		MobRepeller newRepeller = new MobRepeller( block, plugin.getConfig().getStrength( block ) );
 		this.list.add( newRepeller );
 		save();
@@ -76,9 +71,6 @@ public class MobRepellentList
 	
 	public boolean remove( Block base )
 	{
-		if( !loaded )
-			return false;
-		
 		int pos = getPositionOfRepeller( base );
 		
 		if( pos > -1 )
@@ -100,9 +92,6 @@ public class MobRepellentList
 	 */
 	private int getPositionOfRepeller( Block base )
 	{
-		if( !loaded )
-			return -1;
-		
 		for( int i = 0; i < list.size(); i++ )
 		{
 			Block cur = list.get( i ).getBase();
@@ -119,11 +108,13 @@ public class MobRepellentList
 		return -1;
 	}
 	
+	public ArrayList<MobRepeller> getList()
+	{
+		return list;
+	}
+	
 	public boolean contains( Block base )
 	{
-		if( !loaded )
-			return false;
-		
 		int pos = getPositionOfRepeller( base );
 		
 		if( pos > -1 )
@@ -132,7 +123,7 @@ public class MobRepellentList
 		return false;
 	}
 
-	protected void load()
+	private void load()
 	{
 		if( this.file.exists() )
 		{
@@ -226,15 +217,11 @@ public class MobRepellentList
 		else
 			this.plugin.getLogger().info( "[MobRepellent] Finished loading plugin. No repellers were loaded." );
 			
-		this.loaded = true;
 		save();
 	}
 
 	private void save()
 	{
-		if( !loaded )
-			return;
-		
 		try
 		{
 			if( this.file.exists() )

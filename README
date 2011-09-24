@@ -1,4 +1,4 @@
-MobRepellent v0.4.2 - a Bukkit plugin
+MobRepellent v0.4.3 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -27,6 +27,14 @@ MobRepellent v0.4.2 - a Bukkit plugin
         - Medium - Gold block - 30 block radius
         - Large - Diamond block - 50 block radius
 
+* Console/Admin Commands
+
+    NOTE: Since permissions are not yet implemented, these commands can be
+          used by any player.
+    
+    /mrlist - Lists all currently loaded repellers
+    /mrreload - Reloads the configuration file
+
 * Configuring MobRepellent
 
     You can configure MobRepellent to use almost any block type instead of
@@ -40,10 +48,14 @@ MobRepellent v0.4.2 - a Bukkit plugin
 * Todo list
 
     - Add Permissions support
-    - Ability to reload configuration file without shutting down the server
-    - Add admin command to list all repellers with their coordinates
 
 * Changelog
+
+    Version 0.4.3
+        - Added admin/console commands for listing repellers and reloading
+          configuration files
+        - Bugfix for egg spawning
+        - Possible bugfixes for blocking entity spawning
 
     Version 0.4.2
         - Added delay to loading repellers until all other plugins have

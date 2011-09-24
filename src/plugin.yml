@@ -1,3 +1,10 @@
 name: MobRepellent
 main: mobrepellent.MobRepellent
-version: 0.4.2
+version: 0.5
+commands:
+    mrlist:
+        description: Lists all loaded repellers
+        usage: "Usage: /mrlist"
+    mrreload:
+        description: Reload configuration file
+        usage: "Usage: /mrreload"

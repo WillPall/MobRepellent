@@ -4,9 +4,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,8 +30,6 @@ public class MobRepellent extends JavaPlugin
 		// Config is needed before anything else
 		config = new MobRepellentConfiguration( this );
 		
-		worlds = (ArrayList<World>) getServer().getWorlds();
-		
 		// Set up the default config, if one doesn't exist
 		File configFile = new File( "plugins/MobRepellent/config.yml" );
 		if( !configFile.isFile() )
@@ -40,17 +44,7 @@ public class MobRepellent extends JavaPlugin
 			this.log.info( "[MobRepellent] Folder not found, creating new one." );
 		}
 
-		// TODO: fix this to delay loading based on configuration
-		repellers = new MobRepellentList( "plugins/MobRepellent/", this, true );
-		
-		if( repellers.isLoaded() )
-		{
-			loadPlugin();
-		}
-		else
-		{
-			delayLoadTask = getServer().getScheduler().scheduleSyncDelayedTask( this, new MobRepellentDelayLoadRunnable( this ) );
-		}
+		delayLoadTask = getServer().getScheduler().scheduleSyncDelayedTask( this, new MobRepellentDelayLoadRunnable( this ) );
 
 		PluginDescriptionFile description = getDescription();
 		getServer().getLogger().info( description.getName() + " (v" + description.getVersion() + ") is enabled!" );
@@ -61,26 +55,68 @@ public class MobRepellent extends JavaPlugin
 		config.save();
 	}
 	
-	public void loadPlugin()
+	public boolean onCommand( CommandSender sender, Command command, String label, String[] args )
 	{
-		loadPlugin( false );
+		// This is for whether we want console-only or player command
+		Player player = null;
+		
+		if( sender instanceof Player )
+			player = (Player) sender;
+		
+		if( command.getName().equalsIgnoreCase( "mrlist" ) )
+		{
+			ArrayList<MobRepeller> list = repellers.getList();
+			if( player != null )
+				player.sendMessage( ChatColor.DARK_GREEN + "Loaded Repellers:" );
+			else
+				log.info( "[MobRepellent] Loaded Repellers:" );
+			
+			for( int i = 0; i < list.size(); i++ )
+			{
+				Block base = list.get(i).getBase();
+				
+				if( player != null )
+				{
+					player.sendMessage( ChatColor.GREEN.toString() + (i+1) + " - W: " + list.get( i ).getWorld().getName() + " - Co-ord: " + base.getX() + ", " + base.getY() + ", " + base.getZ() );
+				}
+				else
+					log.info( "    " + (i+1) + " - W: " + list.get( i ).getWorld().getName() + " - Co-ord: " + base.getX() + ", " + base.getY() + ", " + base.getZ() );
+			}
+			return true;
+		}
+		else if( command.getName().equalsIgnoreCase( "mrreload" ) )
+		{
+			this.config.reload();
+			if( player != null )
+			{
+				player.sendMessage( ChatColor.GREEN.toString() + "MobRepellent config successfully reloaded." );
+			}
+			else
+				log.info( "[MobRepellent] Config successfully reloaded." );
+		
+			return true;
+		}
+		
+		return false;
 	}
 	
-	public void loadPlugin( boolean delayed )
-	{	
-		if( delayed )
-		{
-			getServer().getScheduler().cancelTask( delayLoadTask );
-			// reload worlds, just in case
-			worlds = (ArrayList<World>) getServer().getWorlds();
-			repellers.load();
-		}
-			
+	public void reloadRepellers()
+	{
+		worlds = (ArrayList<World>) getServer().getWorlds();
+		repellers = new MobRepellentList( "plugins/MobRepellent/", this );
+	}
+	
+	public void loadPlugin()
+	{
+		getServer().getScheduler().cancelTask( delayLoadTask );
+		// reload worlds, just in case
+		worlds = (ArrayList<World>) getServer().getWorlds();
+		repellers = new MobRepellentList( "plugins/MobRepellent/", this );
 		
 		MobRepellentEntityListener entityListener = new MobRepellentEntityListener( this );
 		MobRepellentBlockListener blockListener = new MobRepellentBlockListener( this );
 	
-		getServer().getPluginManager().registerEvent( Event.Type.CREATURE_SPAWN, entityListener, Event.Priority.Normal,
+		getServer().getPluginManager().registerEvent( Event.Type.CREATURE_SPAWN, entityListener, Event.Priority.High,
 				this );
 		getServer().getPluginManager().registerEvent( Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal,
 				this );
@@ -106,6 +142,12 @@ public class MobRepellent extends JavaPlugin
 	public ArrayList<World> getWorlds()
 	{
 		return worlds;
+	}
+	
+	public void debug( String message )
+	{
+		if( config.getDebugMode() )
+			log.info( message );
 	}
 	
 	public static boolean isBaseOfRepeller( Block block, MobRepellentConfiguration configuration )
