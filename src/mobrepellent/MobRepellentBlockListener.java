@@ -23,7 +23,7 @@ public class MobRepellentBlockListener extends BlockListener
 	{
 		Block block = event.getBlock();
 
-		if( plugin.getConfig().getRadius( block.getType() ) != -1 )
+		if( plugin.getConfig().getRadius( block ) != -1 )
 		{
 			ArrayList<Block> blockSet = getAdjacentRepellerBlocks( block );
 			
@@ -46,7 +46,7 @@ public class MobRepellentBlockListener extends BlockListener
 	{
 		Block block = event.getBlock();
 
-		if( plugin.getConfig().getRadius( block.getType() ) != -1 )
+		if( plugin.getConfig().getRadius( block ) != -1 )
 		{
 			if( removeBrokenRepellers( block ) )
 				event.getPlayer().sendMessage( ChatColor.RED + "You've destroyed a MobRepeller!" );
@@ -129,32 +129,32 @@ public class MobRepellentBlockListener extends BlockListener
 		//		 all adjacent blocks
 		//		 NEW STUFF: There is a better way. convert this to a 3d matrix and match
 		//		 against the matrix
-		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x + 1, y, z ).getType() ) != -1 ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x + 1, y, z ) ) != -1 ) &&
 			( !blockSet.contains( currentWorld.getBlockAt( x + 1, y, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x + 1, y, z ), blockSet );
 		}
-		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x - 1, y, z ).getType() ) != -1 ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x - 1, y, z ) ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x - 1, y, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x - 1, y, z ), blockSet );
 		}
-		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y + 1, z ).getType() ) != -1 ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y + 1, z ) ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y + 1, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y + 1, z ), blockSet );
 		}
-		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y - 1, z ).getType() ) != -1 ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y - 1, z ) ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y - 1, z ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y - 1, z ), blockSet );
 		}
-		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y, z + 1 ).getType() ) != -1 ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y, z + 1 ) ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y, z + 1 ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y, z + 1 ), blockSet );
 		}
-		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y, z - 1 ).getType() ) != -1 ) &&
+		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x, y, z - 1 ) ) != -1 ) &&
 				( !blockSet.contains( currentWorld.getBlockAt( x, y, z - 1 ) ) ) )
 		{
 			addToSet( currentWorld.getBlockAt( x, y, z - 1 ), blockSet );

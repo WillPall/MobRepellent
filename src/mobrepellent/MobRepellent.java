@@ -157,12 +157,12 @@ public class MobRepellent extends JavaPlugin
 		int y = block.getY();
 		int z = block.getZ();
 		
-		if( ( configuration.getRadius( w.getBlockAt( x, y + 1, z ).getType() ) != -1 ) &&
-			( configuration.getRadius( w.getBlockAt( x, y + 2, z ).getType() ) != -1 ) &&
-			( configuration.getRadius( w.getBlockAt( x + 1, y, z ).getType() ) != -1 ) &&
-			( configuration.getRadius( w.getBlockAt( x - 1, y, z ).getType() ) != -1 ) &&
-			( configuration.getRadius( w.getBlockAt( x, y, z + 1 ).getType() ) != -1 ) &&
-			( configuration.getRadius( w.getBlockAt( x, y, z - 1 ).getType() ) != -1 ) )
+		if( ( configuration.getRadius( w.getBlockAt( x, y + 1, z ) ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x, y + 2, z ) ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x + 1, y, z ) ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x - 1, y, z ) ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x, y, z + 1 ) ) != -1 ) &&
+			( configuration.getRadius( w.getBlockAt( x, y, z - 1 ) ) != -1 ) )
 			return true;
 		
 		return false;

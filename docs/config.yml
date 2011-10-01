@@ -23,6 +23,15 @@ large_radius: 50
 # in the mountain and every stone block adjacent to the mountain to be
 # confused for a repeller. This causes massive performance issues and could
 # cause mobs to become very very scarce.
+#
+#
+# You can also set specific block types by using a string and a colon. For
+# instance, to restrict small repellers to only orange wool you would use:
+# 
+# small_id: '35:1'
+#
+# Setting small_id to '35:0' will only build a repeller out of white wool.
+# Using "small_id: 35" will allow all types of wool.
 small_id: 42
 medium_id: 41
 large_id: 57

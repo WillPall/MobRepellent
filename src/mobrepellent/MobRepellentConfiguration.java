@@ -88,19 +88,27 @@ public class MobRepellentConfiguration
 	
 	public int getRadius( Block block )
 	{
-		return getRadius( block.getType() );
+		return getRadius( block.getType(), block.getData() );
 	}
 	
-	public int getRadius( Material mat )
+	// TODO: replace this with getRadius(Block)
+	public int getRadius( Material mat, int blockData )
 	{
-		if( mat == getBlockType( "small" ) )
+		if( mat == getBlockType( "small" ) &&
+			( getBlockDamage( "small" ) == -1 ||
+			blockData == getBlockDamage( "small" ) ) )
 			return config.getInt( "small_radius", 20 );
-		else if( mat == getBlockType( "medium" ) )
+		else if( mat == getBlockType( "medium" ) &&
+			( getBlockDamage( "medium" ) == -1 ||
+			blockData == getBlockDamage( "medium" )  ) )
 			return config.getInt( "medium_radius", 30 );
-		else if( mat == getBlockType( "large" ) )
+		else if( mat == getBlockType( "large" ) &&
+			( getBlockDamage( "large" ) == -1 ||
+			blockData == getBlockDamage( "large" )  ) )
 			return config.getInt( "large_radius", 50 );
 		else if( config.getInt( "block_id", -1 ) != -1 )
 		{
+			// Backwards compatibility
 			int largeId = config.getInt( "block_id", 57 );
 			int largeRad = config.getInt( "radius", 50 );
 			config.removeProperty( "block_id" );
@@ -116,16 +124,50 @@ public class MobRepellentConfiguration
 		return -1;
 	}
 	
+	private int[] getItemType( String name, int def )
+	{
+		String elements[] = config.getString( name, "" ).split( ":" );
+
+		if( elements.length > 1 )
+			plugin.debug( "Getting type - " + elements[0] + ":" + elements[1] );
+		else
+			plugin.debug( "Getting type - " + elements[0] );
+			
+		int values[] = new int[2];
+		
+		// Setup defaults
+		values[0] = def;
+		values[1] = -1;
+		
+		try
+		{
+			values[0] = Integer.parseInt( elements[0] );
+			if( elements.length > 1 )
+				values[1] = Integer.parseInt( elements[1] );
+			
+			if( elements.length > 1 )
+				plugin.debug( "Got type - " + values[0] + ":" + values[1] );
+			else
+				plugin.debug( "Got type - " + values[0] );
+		}
+		catch( NumberFormatException nfe )
+		{
+			plugin.debug( "[MobRepellent] Error loading item type for '" + name + "'. Defaulting to " + def + "." );
+		}
+		
+		return values;
+	}
+	
 	public Material getBlockType( String size )
 	{
 		int id = -1;
 		
 		if( size.equals( "small" ) )
-			id = config.getInt( "small_id", 42 );
+			id = getItemType( "small_id", 42 )[0];
 		else if( size.equals( "medium" ) )
-			id = config.getInt( "medium_id", 41 );
+			id = getItemType( "medium_id", 41 )[0];
 		else if( size.equals( "large" ) )
-			id = config.getInt( "large_id", 57 );
+			id = getItemType( "large_id", 57 )[0];
 		else
 			id = 57;
 		
@@ -167,5 +209,19 @@ public class MobRepellentConfiguration
 			return mat;
 		
 		return Material.DIAMOND_BLOCK;
+	}
+	
+	public int getBlockDamage( String size )
+	{
+		int damage = -1;
+		
+		if( size.equals( "small" ) )
+			damage = getItemType( "small_id", 42 )[1];
+		else if( size.equals( "medium" ) )
+			damage = getItemType( "medium_id", 41 )[1];
+		else if( size.equals( "large" ) )
+			damage = getItemType( "large_id", 57 )[1];
+		
+		return damage;
 	}
 }
