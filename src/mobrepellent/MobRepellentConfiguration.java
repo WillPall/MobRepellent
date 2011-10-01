@@ -41,6 +41,8 @@ public class MobRepellentConfiguration
 	{
 		if( config.getBoolean( "debug_mode", false ) == false )
 			config.removeProperty( "debug_mode" );
+		if( config.getInt( "block_id", -1 ) == -1 )
+			config.removeProperty( "block_id" );
 		config.save();
 	}
 	

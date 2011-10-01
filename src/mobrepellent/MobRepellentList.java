@@ -30,8 +30,13 @@ public class MobRepellentList
 	}
 	
 	// TODO: get rid of this function. this is for debug purposes only
-	public int getRepelledBaseId( double x, double y, double z, World world )
+	public int getRepelledBaseId( Location loc )
 	{
+		double x = loc.getX();
+		double y = loc.getY();
+		double z = loc.getZ();
+		World world = loc.getWorld();
+		
 		for( int i = 0; i < list.size(); i++ )
 		{
 			Block base = list.get( i ).getBase();
@@ -47,8 +52,13 @@ public class MobRepellentList
 		return -1;
 	}
 	
-	public boolean isRepelled( double x, double y, double z, World world )
+	public boolean isRepelled( Location loc )
 	{	
+		double x = loc.getX();
+		double y = loc.getY();
+		double z = loc.getZ();
+		World world = loc.getWorld();
+		
 		for( int i = 0; i < list.size(); i++ )
 		{
 			Block base = list.get( i ).getBase();
@@ -166,10 +176,7 @@ public class MobRepellentList
 								
 							for( int i = 0; i < worlds.size(); i++ )
 							{
-								plugin.debug( "[MobRepellent] Searching world '" + worlds.get( i ).getName() + "' for repeller #" + lineNum );
-								plugin.debug( "[MobRepellent] Block matching repller in world is (getType) " + worlds.get( i ).getBlockAt( x, y, z ).getType().toString() );
-								plugin.debug( "[MobRepellent] Block matching repller in world is (Location) " + (new Location(worlds.get(i), x, y, z) ).getBlock().getType().toString() );
-								plugin.debug( "[MobRepellent] Block matching repller in world is (getBlockById) " + Material.getMaterial( worlds.get( i ).getBlockTypeIdAt( x, y, z ) ) );
+								plugin.debug( "[MobRepellent] Block matching repller in world is type: " + worlds.get( i ).getBlockAt( x, y, z ).getType().toString() );
 								
 								// If the file has a world, find the world with the UID and add it
 								// otherwise, try to find a world that has a repeller at this position and
@@ -178,7 +185,11 @@ public class MobRepellentList
 									worlds.get(i).getUID().toString().equals( wUID ) ) ||
 									MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() ) )
 								{
-									plugin.debug( "[MobRepellent] Possibly found repeller #" + lineNum + " in world '" + worlds.get( i ).getName() + "'" );
+									// TODO: determine what to do with this
+									// Send a debug message that the repeller may not be valid
+									if( !MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() ) )
+										plugin.debug( "[MobRepellent] WARNING: Repeller at (" + x + ", " + y + ", " + z + ") in world '" + worlds.get(i).getName() + "' may be invalid.");
+										
 									// TODO: this is hacky. The repeller loaded from the file must equal the block type
 									//		 loaded from the config. However, block type is sometimes checked in the above
 									//		 conditional because of backwards compatibility. Find a better way to do this.
