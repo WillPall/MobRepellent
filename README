@@ -18,9 +18,11 @@ MobRepellent v0.4.3 - a Bukkit plugin
     remaining two diamond blocks directly above the block in the center of the
     plus sign.
 
-    After the repeller is constructed, no hostile mobs will spawn within the
-    spherical radius of the base of the repeller. To remove the repeller,
-    simply remove one of the blocks that is part of the repeller.
+    After the repeller is constructed, no hostile mobs will spawn within a
+    cuboid radius of the base of the repeller. For instance, if the radius is
+    50 blocks, it will repel in a 100x100x100 cube centered at the base of the
+    repeller. To remove the repeller, simply remove one of the blocks that is
+    part of the repeller.
     
     Default repeller types and radii:
         - Small - Iron block - 20 block radius
@@ -47,9 +49,21 @@ MobRepellent v0.4.3 - a Bukkit plugin
 
 * Todo list
 
-    - Add Permissions support
-
+    - Permissions support
+    - Configuration option to select individual mobs to repel
+    - Custom repeller shapes (admin defined structures)
+      
 * Changelog
+
+    Version 0.4.4
+        - Bugfix for repellers not loading correctly if the chunk becomes
+          loaded and then unloaded
+        - Removed auto-checking for repeller existence because of Bukkit
+          issue #656
+        - Bugfix for repellers just plain not working
+        - (Hopefully) final bugfix for egg spawning
+        - Bugfix for unnecessary 'block_id = -1' line in config.yml
+        - Bugfix for incorrect plugin version in plugin.yml
 
     Version 0.4.3
         - Added admin/console commands for listing repellers and reloading
