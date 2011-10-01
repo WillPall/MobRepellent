@@ -127,6 +127,8 @@ public class MobRepellentBlockListener extends BlockListener
 
 		// TODO: this algorithm seems very hacky. must be a better way to determine
 		//		 all adjacent blocks
+		//		 NEW STUFF: There is a better way. convert this to a 3d matrix and match
+		//		 against the matrix
 		if( ( plugin.getConfig().getRadius( currentWorld.getBlockAt( x + 1, y, z ).getType() ) != -1 ) &&
 			( !blockSet.contains( currentWorld.getBlockAt( x + 1, y, z ) ) ) )
 		{

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
@@ -64,7 +66,7 @@ public class MobRepellentList
 	
 	public void add( Block block )
 	{
-		MobRepeller newRepeller = new MobRepeller( block, plugin.getConfig().getStrength( block ) );
+		MobRepeller newRepeller = new MobRepeller( block/*, plugin.getConfig().getStrength( block )*/ );
 		this.list.add( newRepeller );
 		save();
 	}
@@ -99,7 +101,7 @@ public class MobRepellentList
 			if( ( cur.getX() == base.getX() ) &&
 				( cur.getY() == base.getY() ) &&
 				( cur.getZ() == base.getZ() ) &&
-				( cur.getWorld().getUID().equals( base.getWorld().getUID() ) ) )
+				( cur.getWorld().getUID().toString().equals( base.getWorld().getUID().toString() ) ) )
 			{
 				return i;
 			}
@@ -152,15 +154,23 @@ public class MobRepellentList
 							String wUID = null;
 							ArrayList<World> worlds = plugin.getWorlds();
 							boolean added = false;
+							
+							plugin.debug( "[MobRepellent] Searching for repellent (#" + lineNum + ") at " + x + "," + y + "," + z );
 
 							// Try to load the world, otherwise, this may be an old save file
 							if( fields.length >= 4 )
 							{
 								wUID = fields[ 3 ];
+								plugin.debug( "[MobRepellent] #" + lineNum + " has wUID = " + wUID );
 							}
 								
 							for( int i = 0; i < worlds.size(); i++ )
 							{
+								plugin.debug( "[MobRepellent] Searching world '" + worlds.get( i ).getName() + "' for repeller #" + lineNum );
+								plugin.debug( "[MobRepellent] Block matching repller in world is (getType) " + worlds.get( i ).getBlockAt( x, y, z ).getType().toString() );
+								plugin.debug( "[MobRepellent] Block matching repller in world is (Location) " + (new Location(worlds.get(i), x, y, z) ).getBlock().getType().toString() );
+								plugin.debug( "[MobRepellent] Block matching repller in world is (getBlockById) " + Material.getMaterial( worlds.get( i ).getBlockTypeIdAt( x, y, z ) ) );
+								
 								// If the file has a world, find the world with the UID and add it
 								// otherwise, try to find a world that has a repeller at this position and
 								// add that instead
@@ -168,13 +178,16 @@ public class MobRepellentList
 									worlds.get(i).getUID().toString().equals( wUID ) ) ||
 									MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() ) )
 								{
+									plugin.debug( "[MobRepellent] Possibly found repeller #" + lineNum + " in world '" + worlds.get( i ).getName() + "'" );
 									// TODO: this is hacky. The repeller loaded from the file must equal the block type
 									//		 loaded from the config. However, block type is sometimes checked in the above
 									//		 conditional because of backwards compatibility. Find a better way to do this.
-									if( !this.contains( worlds.get(i).getBlockAt( x, y, z ) ) &&
-										MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() ) )
+									// TODO AGAIN: removed the block checking. this should never be a problem anyway
+									if( !this.contains( worlds.get(i).getBlockAt( x, y, z ) ) /*&&
+										MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() )*/ )
 									{
-										list.add( new MobRepeller( worlds.get(i).getBlockAt( x, y, z ), plugin.getConfig().getStrength( worlds.get(i).getBlockAt( x, y, z ) ) ) );
+										plugin.debug( "[MobRepellent] Found repeller #" + lineNum + " in world '" + worlds.get( i ).getName() + "'" );
+										list.add( new MobRepeller( worlds.get(i).getBlockAt( x, y, z )/*, plugin.getConfig().getStrength( worlds.get(i).getBlockAt( x, y, z ) )*/ ) );
 										added = true;
 										break;
 									}
@@ -201,10 +214,17 @@ public class MobRepellentList
 					// return so that we don't overwrite a possibly fine repellers.list
 					return;
 				}
+				
+				buffer.close();
+				fis.close();
 			}
 			catch( FileNotFoundException e )
 			{
 				e.getStackTrace();
+			}
+			catch( IOException ioe )
+			{
+				ioe.printStackTrace();
 			}
 		}
 		else
@@ -216,7 +236,8 @@ public class MobRepellentList
 			this.plugin.getLogger().info( "[MobRepellent] Finished loading plugin." );
 		else
 			this.plugin.getLogger().info( "[MobRepellent] Finished loading plugin. No repellers were loaded." );
-			
+		
+		
 		save();
 	}
 
