@@ -1,4 +1,4 @@
-MobRepellent v0.4.4 - a Bukkit plugin
+MobRepellent v0.5- a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -31,12 +31,38 @@ MobRepellent v0.4.4 - a Bukkit plugin
 
 * Console/Admin Commands
 
-    NOTE: Since permissions are not yet implemented, these commands can be
-          used by any player.
+    All console commands default to OP-only.
     
     /mrlist - Lists all currently loaded repellers
     /mrreload - Reloads the configuration file
+    /mrremove [repellerNumber] - Removes the selected number as found in the
+                                 list given by /mrlist. Does not remove the
+                                 repeller structure.
+    /mrremoveall - Removes all currently loaded repellers. Does not remove the
+                   repeller structure.
+* Permissions
 
+    mobrepellent.* - Access to all permissions
+    
+    mobrepellent.list
+        Default: OP-only
+        Allows use of /mrlist command
+    mobrepellent.reload
+        Default: OP-only
+        Allows use of /mrreload command
+    mobrepellent.remove
+        Default: OP-only
+        Allows use of /mrremove command
+    mobrepellent.removeall
+        Default: OP-only
+        Allows use of /mrremoveall command
+    mobrepellent.create
+        Default: all players
+        Allows player to create a repeller
+    mobrepellent.destroy
+        Default: all players
+        Allows player to destroy a repeller
+    
 * Configuring MobRepellent
 
     You can configure MobRepellent to use almost any block type instead of
@@ -49,11 +75,16 @@ MobRepellent v0.4.4 - a Bukkit plugin
 
 * Todo list
 
-    - Permissions support
     - Configuration option to select individual mobs to repel
     - Custom repeller shapes (admin defined structures)
       
 * Changelog
+
+    Version 0.5
+        - Added Permissions support!!
+        - Added two new commands for managing repellers
+        - Enabled configuration to select certain block types such as colored
+          wool or cracked stone brick
 
     Version 0.4.4
         - Bugfix for repellers not loading correctly if the chunk becomes

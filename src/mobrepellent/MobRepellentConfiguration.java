@@ -128,10 +128,12 @@ public class MobRepellentConfiguration
 	{
 		String elements[] = config.getString( name, "" ).split( ":" );
 
-		if( elements.length > 1 )
+		// TODO: check these out again, seems to be getting called
+		//		 way too many times
+		/*if( elements.length > 1 )
 			plugin.debug( "Getting type - " + elements[0] + ":" + elements[1] );
 		else
-			plugin.debug( "Getting type - " + elements[0] );
+			plugin.debug( "Getting type - " + elements[0] );*/
 			
 		int values[] = new int[2];
 		
@@ -145,10 +147,12 @@ public class MobRepellentConfiguration
 			if( elements.length > 1 )
 				values[1] = Integer.parseInt( elements[1] );
 			
+			// TODO: same as above
+			/*
 			if( elements.length > 1 )
 				plugin.debug( "Got type - " + values[0] + ":" + values[1] );
 			else
-				plugin.debug( "Got type - " + values[0] );
+				plugin.debug( "Got type - " + values[0] );*/
 		}
 		catch( NumberFormatException nfe )
 		{

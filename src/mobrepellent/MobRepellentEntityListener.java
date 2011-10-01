@@ -28,7 +28,7 @@ public class MobRepellentEntityListener extends EntityListener
 			if( plugin.getConfig().getDebugMode() )
 			{
 				int num = plugin.getRepellerList().getRepelledBaseId( event.getLocation() );
-				this.plugin.debug( "[MobRepellent] Entity repelled by #" + num + ": " + Math.round( event.getLocation().getX() ) + ", " + Math.round( event.getLocation().getY() ) + ", " + Math.round( event.getLocation().getZ() ) + ", " + event.getLocation().getWorld().getName() );
+				this.plugin.debug( "[MobRepellent] Entity '" + event.getCreatureType().getName() + "' repelled by #" + num + ": " + Math.round( event.getLocation().getX() ) + ", " + Math.round( event.getLocation().getY() ) + ", " + Math.round( event.getLocation().getZ() ) + ", " + event.getLocation().getWorld().getName() );
 			}
 			
 			event.setCancelled( true );

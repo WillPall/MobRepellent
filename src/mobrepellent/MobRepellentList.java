@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -94,6 +95,25 @@ public class MobRepellentList
 		}
 		
 		return false;
+	}
+	
+	public boolean remove( int repellerNumber )
+	{
+		if( ( repellerNumber > 0 ) &&
+			( repellerNumber <= list.size() ) )
+		{
+			list.remove( repellerNumber - 1 );
+			save();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public void removeAll()
+	{
+		list.clear();
+		save();
 	}
 	
 	/**

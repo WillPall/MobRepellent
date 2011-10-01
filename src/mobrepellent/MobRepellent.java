@@ -65,27 +65,59 @@ public class MobRepellent extends JavaPlugin
 		
 		if( command.getName().equalsIgnoreCase( "mrlist" ) )
 		{
-			ArrayList<MobRepeller> list = repellers.getList();
-			if( player != null )
-				player.sendMessage( ChatColor.DARK_GREEN + "Loaded Repellers:" );
-			else
-				log.info( "[MobRepellent] Loaded Repellers:" );
-			
-			for( int i = 0; i < list.size(); i++ )
+			// decline if player doesn't have permission
+			if( ( player != null ) &&
+				!player.hasPermission( "mobrepellent.list" ) )
 			{
-				Block base = list.get(i).getBase();
-				
+				player.sendMessage( ChatColor.RED + "You do not have permission to use that command." );
+				return true;
+			}
+			
+			ArrayList<MobRepeller> list = repellers.getList();
+			
+			if( list.isEmpty() )
+			{
 				if( player != null )
 				{
-					player.sendMessage( ChatColor.GREEN.toString() + (i+1) + " - W: " + list.get( i ).getWorld().getName() + " - Co-ord: " + base.getX() + ", " + base.getY() + ", " + base.getZ() );
+					player.sendMessage( ChatColor.GREEN + "No repellers loaded." );
 				}
 				else
-					log.info( "    " + (i+1) + " - W: " + list.get( i ).getWorld().getName() + " - Co-ord: " + base.getX() + ", " + base.getY() + ", " + base.getZ() );
+					log.info( "[MobRepellent] No repellers loaded." );
+			}
+			else
+			{
+				if( player != null )
+					player.sendMessage( ChatColor.DARK_GREEN + "Loaded Repellers:" );
+				else
+					log.info( "[MobRepellent] Loaded Repellers:" );
+				
+				for( int i = 0; i < list.size(); i++ )
+				{
+					Block base = list.get( i ).getBase();
+
+					if( player != null )
+					{
+						player.sendMessage( ChatColor.GREEN.toString() + ( i + 1 ) + " - W: "
+								+ list.get( i ).getWorld().getName() + " - Co-ord: " + base.getX() + ", " + base.getY()
+								+ ", " + base.getZ() );
+					}
+					else
+						log.info( "    " + ( i + 1 ) + " - W: " + list.get( i ).getWorld().getName() + " - Co-ord: "
+								+ base.getX() + ", " + base.getY() + ", " + base.getZ() );
+				}
 			}
 			return true;
 		}
 		else if( command.getName().equalsIgnoreCase( "mrreload" ) )
 		{
+			// decline if player doesn't have permission
+			if( ( player != null ) &&
+				!player.hasPermission( "mobrepellent.list" ) )
+			{
+				player.sendMessage( ChatColor.RED + "You do not have permission to use that command." );
+				return true;
+			}
+			
 			this.config.reload();
 			if( player != null )
 			{
@@ -94,6 +126,55 @@ public class MobRepellent extends JavaPlugin
 			else
 				log.info( "[MobRepellent] Config successfully reloaded." );
 		
+			return true;
+		}
+		else if( command.getName().equalsIgnoreCase( "mrremove" ) )
+		{
+			// decline if player doesn't have permission
+			if( ( player != null ) &&
+				!player.hasPermission( "mobrepellent.remove" ) )
+			{
+				player.sendMessage( ChatColor.RED + "You do not have permission to use that command." );
+				return true;
+			}
+			
+			int repellerNum = -1;
+			try
+			{
+				repellerNum = Integer.parseInt( args[0] );
+
+				if( repellers.remove( repellerNum ) )
+				{
+					if( player != null )
+						player.sendMessage( ChatColor.GREEN + "Removed repeller #" + repellerNum );
+					else
+						log.info( "[MobRepellent] Removed repeller #" + repellerNum );
+					
+					return true;
+				}
+			}
+			catch( Exception e )
+			{
+				// Do nothing
+			}
+			return false;
+		}
+		else if( command.getName().equalsIgnoreCase( "mrremoveall" ) )
+		{
+			// decline if player doesn't have permission
+			if( ( player != null ) &&
+				!player.hasPermission( "mobrepellent.removeall" ) )
+			{
+				player.sendMessage( ChatColor.RED + "You do not have permission to use that command." );
+				return true;
+			}
+			
+			repellers.removeAll();
+			if( player != null )
+				player.sendMessage( ChatColor.GREEN + "Removed all repellers" );
+			else
+				log.info( "[MobRepellent] Removed all repellers" );
+			
 			return true;
 		}
 		

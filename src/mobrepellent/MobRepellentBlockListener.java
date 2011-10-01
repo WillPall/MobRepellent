@@ -22,6 +22,12 @@ public class MobRepellentBlockListener extends BlockListener
 	public void onBlockPlace( BlockPlaceEvent event )
 	{
 		Block block = event.getBlock();
+		
+		if( !event.getPlayer().hasPermission( "mobrepellent.create" ) )
+		{
+			// Don't cancel the event, just don't construct a repeller
+			return;
+		}
 
 		if( plugin.getConfig().getRadius( block ) != -1 )
 		{
@@ -46,8 +52,16 @@ public class MobRepellentBlockListener extends BlockListener
 	{
 		Block block = event.getBlock();
 
-		if( plugin.getConfig().getRadius( block ) != -1 )
+		if( ( plugin.getConfig().getRadius( block ) != -1 ) &&
+			( getAdjacentRepellerBlocks( block ).size() > 0 ) )
 		{
+			if( !event.getPlayer().hasPermission( "mobrepellent.destroy" ) )
+			{
+				event.getPlayer().sendMessage( ChatColor.GREEN + "That's a MobRepeller and you don't have permission to destroy it." );
+				event.setCancelled( true );
+				return;
+			}
+			
 			if( removeBrokenRepellers( block ) )
 				event.getPlayer().sendMessage( ChatColor.RED + "You've destroyed a MobRepeller!" );
 		}
