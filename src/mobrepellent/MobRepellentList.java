@@ -40,13 +40,13 @@ public class MobRepellentList
 		
 		for( int i = 0; i < list.size(); i++ )
 		{
-			Block base = list.get( i ).getBase();
-			int radius = plugin.getConfig().getRadius( base );
+			MobRepeller repeller = list.get( i );
+			int radius = plugin.getConfig().getRadius( repeller );
 			
-			if( ( ( base.getX() - radius ) < x ) && ( ( base.getX() + radius ) > x ) &&
-				( ( base.getY() - radius ) < y ) && ( ( base.getY() + radius ) > y ) &&
-				( ( base.getZ() - radius ) < z ) && ( ( base.getZ() + radius ) > z ) &&
-				( ( base.getWorld().getUID().equals( world.getUID() ) ) ) )
+			if( ( ( repeller.getX() - radius ) < x ) && ( ( repeller.getX() + radius ) > x ) &&
+				( ( repeller.getY() - radius ) < y ) && ( ( repeller.getY() + radius ) > y ) &&
+				( ( repeller.getZ() - radius ) < z ) && ( ( repeller.getZ() + radius ) > z ) &&
+				( ( repeller.getWorld().getUID().equals( world.getUID() ) ) ) )
 				return (i + 1);
 		}
 		
@@ -62,13 +62,13 @@ public class MobRepellentList
 		
 		for( int i = 0; i < list.size(); i++ )
 		{
-			Block base = list.get( i ).getBase();
-			int radius = plugin.getConfig().getRadius( base );
+			MobRepeller repeller = list.get( i );
+			int radius = plugin.getConfig().getRadius( repeller );
 			
-			if( ( ( base.getX() - radius ) < x ) && ( ( base.getX() + radius ) > x ) &&
-				( ( base.getY() - radius ) < y ) && ( ( base.getY() + radius ) > y ) &&
-				( ( base.getZ() - radius ) < z ) && ( ( base.getZ() + radius ) > z ) &&
-				( ( base.getWorld().getUID().equals( world.getUID() ) ) ) )
+			if( ( ( repeller.getX() - radius ) < x ) && ( ( repeller.getX() + radius ) > x ) &&
+				( ( repeller.getY() - radius ) < y ) && ( ( repeller.getY() + radius ) > y ) &&
+				( ( repeller.getZ() - radius ) < z ) && ( ( repeller.getZ() + radius ) > z ) &&
+				( ( repeller.getWorld().getUID().equals( world.getUID() ) ) ) )
 				return true;
 		}
 		
@@ -77,7 +77,14 @@ public class MobRepellentList
 	
 	public void add( Block block )
 	{
-		MobRepeller newRepeller = new MobRepeller( block/*, plugin.getConfig().getStrength( block )*/ );
+		MobRepeller newRepeller = new MobRepeller( block );
+		this.list.add( newRepeller );
+		save();
+	}
+	
+	public void add( int x, int y, int z, World world, Material material, int blockData )
+	{
+		MobRepeller newRepeller = new MobRepeller( x, y, z, world, material, blockData );
 		this.list.add( newRepeller );
 		save();
 	}
@@ -124,14 +131,15 @@ public class MobRepellentList
 	 */
 	private int getPositionOfRepeller( Block base )
 	{
+		// TODO: check on this, this may cause problems when blocks don't exist
 		for( int i = 0; i < list.size(); i++ )
 		{
-			Block cur = list.get( i ).getBase();
+			MobRepeller repeller = list.get( i );
 			
-			if( ( cur.getX() == base.getX() ) &&
-				( cur.getY() == base.getY() ) &&
-				( cur.getZ() == base.getZ() ) &&
-				( cur.getWorld().getUID().toString().equals( base.getWorld().getUID().toString() ) ) )
+			if( ( repeller.getX() == base.getX() ) &&
+				( repeller.getY() == base.getY() ) &&
+				( repeller.getZ() == base.getZ() ) &&
+				( repeller.getWorld().getUID().toString().equals( base.getWorld().getUID().toString() ) ) )
 			{
 				return i;
 			}
@@ -214,11 +222,12 @@ public class MobRepellentList
 									//		 loaded from the config. However, block type is sometimes checked in the above
 									//		 conditional because of backwards compatibility. Find a better way to do this.
 									// TODO AGAIN: removed the block checking. this should never be a problem anyway
+									// TODO: add the block checking back in, we've changed the way repellers are stored
 									if( !this.contains( worlds.get(i).getBlockAt( x, y, z ) ) /*&&
 										MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() )*/ )
 									{
 										plugin.debug( "[MobRepellent] Found repeller #" + lineNum + " in world '" + worlds.get( i ).getName() + "'" );
-										list.add( new MobRepeller( worlds.get(i).getBlockAt( x, y, z )/*, plugin.getConfig().getStrength( worlds.get(i).getBlockAt( x, y, z ) )*/ ) );
+										list.add( new MobRepeller( worlds.get( i ).getBlockAt( x, y, z ) ) );
 										added = true;
 										break;
 									}

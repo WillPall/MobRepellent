@@ -1,32 +1,64 @@
 package mobrepellent;
 
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
 public class MobRepeller
 {
-	private Block base;
+	private int x;
+	private int y;
+	private int z;
+	private Material material;
+	private World world;
+	private int blockData;
+	
 	//private MobRepellerStrength strength;
 	
-	public MobRepeller( Block base/*, MobRepellerStrength strength*/ )
+	public MobRepeller( Block block )
 	{
-		this.base = base;
+		this( block.getX(), block.getY(), block.getZ(), block.getWorld(), block.getType(), block.getData() );
+	}
+	public MobRepeller( int x, int y, int z, World world, Material material, int blockData /*, MobRepellerStrength strength*/ )
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.world = world;
+		this.material = material;
+		this.blockData = blockData;
+		
 		//this.strength = strength;
 	}
 	
-	public void setBase( Block base )
+	public int getX()
 	{
-		this.base = base;
+		return x;
 	}
 	
-	public Block getBase()
+	public int getY()
 	{
-		return base;
+		return y;
+	}
+	
+	public int getZ()
+	{
+		return z;
+	}
+	
+	public Material getMaterial()
+	{
+		return material;
 	}
 	
 	public World getWorld()
 	{
-		return base.getWorld();
+		return world;
+	}
+	
+	public int getBlockData()
+	{
+		return blockData;
 	}
 	
 	/*public MobRepellerStrength getStrength()
@@ -36,7 +68,7 @@ public class MobRepeller
 	
 	public String toString()
 	{
-		String str = base.getX() + "," + base.getY() + "," + base.getZ() + "," + base.getWorld().getUID();
+		String str = x + "," + y + "," + z + "," + world.getUID();
 		
 		return str;
 	}

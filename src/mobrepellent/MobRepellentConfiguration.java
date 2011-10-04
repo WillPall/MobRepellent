@@ -86,6 +86,13 @@ public class MobRepellentConfiguration
 		return MobRepellerStrength.INVALID;
 	}
 	
+	// TODO: none of these getRadius methods should be here,
+	//		 move them to the MobRepeller class
+	public int getRadius( MobRepeller repeller )
+	{
+		return getRadius( repeller.getMaterial(), repeller.getBlockData() );
+	}
+	
 	public int getRadius( Block block )
 	{
 		return getRadius( block.getType(), block.getData() );

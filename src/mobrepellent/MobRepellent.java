@@ -93,17 +93,17 @@ public class MobRepellent extends JavaPlugin
 				
 				for( int i = 0; i < list.size(); i++ )
 				{
-					Block base = list.get( i ).getBase();
+					MobRepeller repeller = list.get( i );
 
 					if( player != null )
 					{
 						player.sendMessage( ChatColor.GREEN.toString() + ( i + 1 ) + " - W: "
-								+ list.get( i ).getWorld().getName() + " - Co-ord: " + base.getX() + ", " + base.getY()
-								+ ", " + base.getZ() );
+								+ list.get( i ).getWorld().getName() + " - Co-ord: " + repeller.getX() + ", " + repeller.getY()
+								+ ", " + repeller.getZ() );
 					}
 					else
 						log.info( "    " + ( i + 1 ) + " - W: " + list.get( i ).getWorld().getName() + " - Co-ord: "
-								+ base.getX() + ", " + base.getY() + ", " + base.getZ() );
+								+ repeller.getX() + ", " + repeller.getY() + ", " + repeller.getZ() );
 				}
 			}
 			return true;
