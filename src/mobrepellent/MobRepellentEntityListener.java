@@ -19,6 +19,7 @@ public class MobRepellentEntityListener extends EntityListener
 	{
 		if( event.isCancelled() ||
 			( event.getSpawnReason() == SpawnReason.EGG ) ||
+			( event.getSpawnReason() == SpawnReason.SPAWNER ) ||
 			( !plugin.getConfig().shouldRepelNeutralMobs() &&
 			( event.getEntity() instanceof Animals ) ) )
 			return;
