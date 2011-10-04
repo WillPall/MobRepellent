@@ -1,4 +1,4 @@
-MobRepellent v0.5- a Bukkit plugin
+MobRepellent v0.5.1 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -79,6 +79,10 @@ MobRepellent v0.5- a Bukkit plugin
     - Custom repeller shapes (admin defined structures)
       
 * Changelog
+
+    Version 0.5.1
+        - Bugfix for mobs being mean and deciding to keep spawning no matter
+          how many times I told them not to (thanks Jaiph!)
 
     Version 0.5
         - Added Permissions support!!
