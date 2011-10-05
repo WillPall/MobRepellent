@@ -1,4 +1,4 @@
-MobRepellent v0.5.1 - a Bukkit plugin
+MobRepellent v0.5.2 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -21,8 +21,10 @@ MobRepellent v0.5.1 - a Bukkit plugin
     After the repeller is constructed, no hostile mobs will spawn within a
     cuboid radius of the base of the repeller. For instance, if the radius is
     50 blocks, it will repel in a 100x100x100 cube centered at the base of the
-    repeller. To remove the repeller, simply remove one of the blocks that is
-    part of the repeller.
+    repeller. Neutral mobs are not blocked by default, but this can be
+    configured in the config.yml. MobRepellent does not affect mob spawners,
+    hostile nor passive. To remove the repeller, simply remove one of the
+    blocks that is part of the repeller.
     
     Default repeller types and radii:
         - Small - Iron block - 20 block radius
@@ -79,6 +81,11 @@ MobRepellent v0.5.1 - a Bukkit plugin
     - Custom repeller shapes (admin defined structures)
       
 * Changelog
+
+    Version 0.5.2
+        - Stopped repellers from blocking spawners. One, a repeller makes a
+          dungeon seem like a cake-walk, and also many servers use passive
+          mob spawners to provide resources for players.
 
     Version 0.5.1
         - Bugfix for mobs being mean and deciding to keep spawning no matter
