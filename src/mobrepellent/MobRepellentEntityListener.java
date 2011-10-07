@@ -1,7 +1,10 @@
 package mobrepellent;
 
+import java.util.HashSet;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.CreatureType;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityListener;
@@ -17,12 +20,22 @@ public class MobRepellentEntityListener extends EntityListener
 	
 	public void onCreatureSpawn( CreatureSpawnEvent event )
 	{
+		// Check for other plugins that have cancelled the event,
+		// egg spawns, spawner spawns, and neutral mobs.
 		if( event.isCancelled() ||
 			( event.getSpawnReason() == SpawnReason.EGG ) ||
 			( event.getSpawnReason() == SpawnReason.SPAWNER ) ||
 			( !plugin.getConfig().shouldRepelNeutralMobs() &&
 			( event.getEntity() instanceof Animals ) ) )
 			return;
+		
+		HashSet<CreatureType> mobsToRepel = plugin.getConfig().getMobsToRepel();
+		// Now check to make sure the mob is in the list
+		if( !mobsToRepel.isEmpty() )
+		{
+			if( !mobsToRepel.contains( event.getCreatureType() ) )
+				return;
+		}
 		
 		if( plugin.getRepellerList().isRepelled( event.getLocation() ) )
 		{

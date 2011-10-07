@@ -1,25 +1,54 @@
 package mobrepellent;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.util.config.Configuration;
+import org.bukkit.entity.CreatureType;
 
 public class MobRepellentConfiguration
 {
 	MobRepellent plugin;
 	Configuration config;
 	
+	// Loaded list of mobs to repel
+	HashSet<CreatureType> mobsToRepel;
+	
 	public MobRepellentConfiguration( MobRepellent plugin )
 	{
 		this.plugin = plugin;
 		this.config = plugin.getConfiguration();
 		config.load();
+		
+		this.load();
+	}
+	
+	// TODO: move all loading into here and change getters to
+	// 		 return stored variables
+	private void load()
+	{
+		// Load the mobs_to_repel list
+		this.mobsToRepel = new HashSet<CreatureType>();
+		
+		for( String creature : config.getStringList( "mobs_to_repel", null ) )
+		{
+			CreatureType type = CreatureType.fromName( creature );
+			
+			if( type != null )
+				mobsToRepel.add( type );
+			else
+				plugin.getLogger().warning( "[MobRepellent] Unknown creature type '" + creature + "' in 'mobs_to_repel'." );
+		}
 	}
 	
 	public void reload()
 	{
 		this.config = plugin.getConfiguration();
 		this.config.load();
+		this.load();
 		plugin.reloadRepellers();
 	}
 	
@@ -34,6 +63,7 @@ public class MobRepellentConfiguration
 		// TODO: figure something out
 		//config.setProperty( "ignite_on_completion", false );
 		config.setProperty( "repel_neutral_mobs", false );
+		config.setProperty( "mobs_to_repel", new ArrayList<String>(0) );
 		config.save();
 	}
 	
@@ -234,5 +264,10 @@ public class MobRepellentConfiguration
 			damage = getItemType( "large_id", 57 )[1];
 		
 		return damage;
+	}
+	
+	public HashSet<CreatureType> getMobsToRepel()
+	{
+		return mobsToRepel;
 	}
 }
