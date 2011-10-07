@@ -39,3 +39,12 @@ large_id: 57
 # This sets whether to repel neutral mobs as well as hostile mobs. Values
 # allowed are 'true' or 'false'
 repel_neutral_mobs: false
+
+# This is a string list of mobs to repel. If left empty, it will repel all
+# hostile mobs and repel all neutral mobs if 'repel_neutral_mobs' is true.
+#
+# For example, to only repel creepers and skeletons use it like this:
+# mobs_to_repel:
+# - Creeper
+# - Skeleton
+mobs_to_repel: 
