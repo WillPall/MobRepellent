@@ -1,4 +1,4 @@
-MobRepellent v0.5.2 - a Bukkit plugin
+MobRepellent v0.6 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -69,18 +69,24 @@ MobRepellent v0.5.2 - a Bukkit plugin
 
     You can configure MobRepellent to use almost any block type instead of
     the default blocks. You can also configure MobRepellent to use any radius
-    to repel mobs. On the first run of the plugin, MobRepellent will
-    automatically create a config.yml file with the default values. See the
-    sample config.yml file for more information:
+    to repel mobs, and select which mobs to repel and which to ignore. On the
+    first run of the plugin, MobRepellent will automatically create a
+    config.yml file with the default values. See the sample config.yml file
+    for more information:
     
     https://github.com/WillPall/MobRepellent/raw/master/docs/config.yml
 
 * Todo list
 
-    - Configuration option to select individual mobs to repel
     - Custom repeller shapes (admin defined structures)
+    - Add visual cue that repeller is working. Possibly with the top block on
+      fire (as suggested by darklust). This will be configurable and probably
+      default to off.
       
 * Changelog
+
+    Version 0.6
+        - Added configuration option to select which mobs to repel
 
     Version 0.5.2
         - Stopped repellers from blocking spawners. One, a repeller makes a
