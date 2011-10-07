@@ -63,7 +63,8 @@ public class MobRepellentConfiguration
 		// TODO: figure something out
 		//config.setProperty( "ignite_on_completion", false );
 		config.setProperty( "repel_neutral_mobs", false );
-		config.setProperty( "mobs_to_repel", new ArrayList<String>(0) );
+		// TODO: why doesn't this work? or does it?
+		config.setProperty( "mobs_to_repel", "" );
 		config.save();
 	}
 	
