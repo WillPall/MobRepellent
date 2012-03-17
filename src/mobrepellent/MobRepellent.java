@@ -31,11 +31,11 @@ public class MobRepellent extends JavaPlugin
 		config = new MobRepellentConfiguration( this );
 		
 		// Set up the default config, if one doesn't exist
-		File configFile = new File( "plugins/MobRepellent/config.yml" );
+		/*File configFile = new File( "plugins/MobRepellent/config.yml" );
 		if( !configFile.isFile() )
 		{
 			config.setDefaults();
-		}
+		}*/
 
 		File pluginDir = new File( "plugins/MobRepellent/" );
 		if( !pluginDir.exists() )
@@ -197,15 +197,12 @@ public class MobRepellent extends JavaPlugin
 		MobRepellentEntityListener entityListener = new MobRepellentEntityListener( this );
 		MobRepellentBlockListener blockListener = new MobRepellentBlockListener( this );
 	
-		getServer().getPluginManager().registerEvent( Event.Type.CREATURE_SPAWN, entityListener, Event.Priority.High,
-				this );
-		getServer().getPluginManager().registerEvent( Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal,
-				this );
-		getServer().getPluginManager().registerEvent( Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal,
-				this );
+		getServer().getPluginManager().registerEvents( entityListener, this );
+		getServer().getPluginManager().registerEvents( blockListener, this );
+		getServer().getPluginManager().registerEvents( blockListener, this );
 	}
 	
-	public MobRepellentConfiguration getConfig()
+	public MobRepellentConfiguration getMobRepellentConfiguration()
 	{
 		return this.config;
 	}

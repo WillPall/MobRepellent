@@ -6,13 +6,21 @@ import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.util.config.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.CreatureType;
 
+/**
+ * Handles configuration variables for MobRepellent.
+ * 
+ * TODO: with the new configuration API, this is bootstrapped and
+ * 		 horribly out of date. Needs to be updated to the new API.
+ * @author Will
+ *
+ */
 public class MobRepellentConfiguration
 {
 	MobRepellent plugin;
-	Configuration config;
+	FileConfiguration config;
 	
 	// Loaded list of mobs to repel
 	HashSet<CreatureType> mobsToRepel;
@@ -20,8 +28,9 @@ public class MobRepellentConfiguration
 	public MobRepellentConfiguration( MobRepellent plugin )
 	{
 		this.plugin = plugin;
-		this.config = plugin.getConfiguration();
-		config.load();
+		this.config = plugin.getConfig();
+		plugin.reloadConfig();
+		this.config.options().copyDefaults( true );
 		
 		this.load();
 	}
@@ -33,7 +42,7 @@ public class MobRepellentConfiguration
 		// Load the mobs_to_repel list
 		this.mobsToRepel = new HashSet<CreatureType>();
 		
-		for( String creature : config.getStringList( "mobs_to_repel", null ) )
+		for( String creature : config.getStringList( "mobs_to_repel" ) )
 		{
 			CreatureType type = CreatureType.fromName( creature );
 			
@@ -46,13 +55,13 @@ public class MobRepellentConfiguration
 	
 	public void reload()
 	{
-		this.config = plugin.getConfiguration();
-		this.config.load();
+		this.config = plugin.getConfig();
+		plugin.reloadConfig();
 		this.load();
 		plugin.reloadRepellers();
 	}
 	
-	public void setDefaults()
+	/*public void setDefaults()
 	{
 		config.setProperty( "small_radius", 20 );
 		config.setProperty( "small_id", 42 );
@@ -66,15 +75,17 @@ public class MobRepellentConfiguration
 		// TODO: why doesn't this work? or does it?
 		config.setProperty( "mobs_to_repel", "" );
 		config.save();
-	}
+	}*/
 	
 	public void save()
 	{
-		if( config.getBoolean( "debug_mode", false ) == false )
+		// TODO: find an alternative to removeProperty()
+		/*if( config.getBoolean( "debug_mode", false ) == false )
 			config.removeProperty( "debug_mode" );
 		if( config.getInt( "block_id", -1 ) == -1 )
-			config.removeProperty( "block_id" );
-		config.save();
+			config.removeProperty( "block_id" );*/
+		
+		plugin.saveConfig();
 	}
 	
 	public boolean shouldRepelNeutralMobs()
@@ -104,12 +115,16 @@ public class MobRepellentConfiguration
 		{
 			int largeId = config.getInt( "block_id", 57 );
 			int largeRad = config.getInt( "radius", 50 );
-			config.removeProperty( "block_id" );
-			config.removeProperty( "radius" );
-			this.setDefaults();			
 			
-			config.setProperty( "large_id", largeId );
-			config.setProperty( "large_radius", largeRad );
+			// TODO: make sure we don't need removeProperty() here anymore
+			//config.removeProperty( "block_id" );
+			//config.removeProperty( "radius" );
+			//this.setDefaults();
+			
+			plugin.saveDefaultConfig();
+			
+			config.set( "large_id", largeId );
+			config.set( "large_radius", largeRad );
 			
 			return MobRepellerStrength.LARGE;
 		}
@@ -149,12 +164,16 @@ public class MobRepellentConfiguration
 			// Backwards compatibility
 			int largeId = config.getInt( "block_id", 57 );
 			int largeRad = config.getInt( "radius", 50 );
-			config.removeProperty( "block_id" );
-			config.removeProperty( "radius" );
-			this.setDefaults();			
 			
-			config.setProperty( "large_id", largeId );
-			config.setProperty( "large_radius", largeRad );
+			// TODO: make sure we don't need removeProperty() anymore
+			//config.removeProperty( "block_id" );
+			//config.removeProperty( "radius" );
+			//this.setDefaults();
+			
+			plugin.saveDefaultConfig();
+			
+			config.set( "large_id", largeId );
+			config.set( "large_radius", largeRad );
 			
 			return largeRad;
 		}
@@ -243,7 +262,11 @@ public class MobRepellentConfiguration
 			
 			case 87: // netherack
 			case 88: // soulsand
-			case 89: // glowstone
+			//case 89: // glowstone
+			
+			case 110: // mycelium
+				
+			case 121: // end stone
 				mat = Material.DIAMOND_BLOCK;
 		}
 		

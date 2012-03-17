@@ -41,7 +41,7 @@ public class MobRepellentList
 		for( int i = 0; i < list.size(); i++ )
 		{
 			MobRepeller repeller = list.get( i );
-			int radius = plugin.getConfig().getRadius( repeller );
+			int radius = plugin.getMobRepellentConfiguration().getRadius( repeller );
 			
 			if( ( ( repeller.getX() - radius ) < x ) && ( ( repeller.getX() + radius ) > x ) &&
 				( ( repeller.getY() - radius ) < y ) && ( ( repeller.getY() + radius ) > y ) &&
@@ -63,7 +63,7 @@ public class MobRepellentList
 		for( int i = 0; i < list.size(); i++ )
 		{
 			MobRepeller repeller = list.get( i );
-			int radius = plugin.getConfig().getRadius( repeller );
+			int radius = plugin.getMobRepellentConfiguration().getRadius( repeller );
 			
 			if( ( ( repeller.getX() - radius ) < x ) && ( ( repeller.getX() + radius ) > x ) &&
 				( ( repeller.getY() - radius ) < y ) && ( ( repeller.getY() + radius ) > y ) &&
@@ -211,11 +211,11 @@ public class MobRepellentList
 								// add that instead
 								if( ( (wUID != null ) &&
 									worlds.get(i).getUID().toString().equals( wUID ) ) ||
-									MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() ) )
+									MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getMobRepellentConfiguration() ) )
 								{
 									// TODO: determine what to do with this
 									// Send a debug message that the repeller may not be valid
-									if( !MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getConfig() ) )
+									if( !MobRepellent.isBaseOfRepeller( worlds.get( i ).getBlockAt( x, y, z ), plugin.getMobRepellentConfiguration() ) )
 										plugin.debug( "[MobRepellent] WARNING: Repeller at (" + x + ", " + y + ", " + z + ") in world '" + worlds.get(i).getName() + "' may be invalid.");
 										
 									// TODO: this is hacky. The repeller loaded from the file must equal the block type

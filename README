@@ -1,4 +1,4 @@
-MobRepellent v0.6 - a Bukkit plugin
+MobRepellent v0.7.0 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -83,7 +83,22 @@ MobRepellent v0.6 - a Bukkit plugin
       fire (as suggested by darklust). This will be configurable and probably
       default to off.
       
+* Known Issues
+
+    - Config file cannot be reloaded (/mrreload) in-game
+    - Config file not correctly created on first-run of plugin
+    - Damage values for blocks (e.g. orange wool), doesn't work
+    - Squid don't spawn near repellers
+    
 * Changelog
+
+    Version 0.7.0 (DEVELOPMENT - Use at your own risk)
+        - Basic functionality restored for CraftBukkit 1.2.3-R0.2 (#2060)
+        - Removed glowstone from restricted blocks, added mycelium, end stone
+        - Introduced small configuration file bugs (must stop server, edit
+          file, restart server for changes to take effect)
+        - Introduced (re-introduced?) bug with squid being blocked from
+          spawning, regardless of configuration options
 
     Version 0.6
         - Added configuration option to select which mobs to repel
