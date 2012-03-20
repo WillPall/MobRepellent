@@ -1,16 +1,17 @@
 # MobRepellent Configuration
 
-# The '*_radius' values allow you to set the radius from the base of the 
+# The 'Radius' values allow you to set the radius from the base of the 
 # repeller that mobs will be repelled.
 #
-# Ex: 'large_radius: 50' will repel mobs a radius of 50 blocks from the base of
+# Ex: 'large: 50' will repel mobs a radius of 50 blocks from the base of
 #     the large repeller. In other words, it will repel in a 100 block cube 
 #     around the repeller.
-small_radius: 20
-medium_radius: 30
-large_radius: 50
+Radius:
+  small: 20
+  medium: 30
+  large: 50
 
-# The '*_id' value sets the block data value to use for the repeller
+# The 'BlockID' values set the block data value to use for the repeller
 # material. Certain blocks are not allowed because of gameplay/performance
 # issues. If one of the forbidden blocks is defined, the plugin will default
 # to diamond blocks.
@@ -24,27 +25,31 @@ large_radius: 50
 # confused for a repeller. This causes massive performance issues and could
 # cause mobs to become very very scarce.
 #
-#
-# You can also set specific block types by using a string and a colon. For
+# You can also set specific block types by using an '@' symbol. For
 # instance, to restrict small repellers to only orange wool you would use:
 # 
-# small_id: '35:1'
+# small: 35@1
 #
-# Setting small_id to '35:0' will only build a repeller out of white wool.
-# Using "small_id: 35" will allow all types of wool.
-small_id: 42
-medium_id: 41
-large_id: 57
+# Setting small to 35@0 will only allow repellers out of white wool.
+# Using "small: 35" will allow all types of wool.
+BlockID:
+  small: 42
+  medium: 41
+  large: 57
 
-# This sets whether to repel neutral mobs as well as hostile mobs. Values
-# allowed are 'true' or 'false'
-repel_neutral_mobs: false
-
-# This is a string list of mobs to repel. If left empty, it will repel all
-# hostile mobs and repel all neutral mobs if 'repel_neutral_mobs' is true.
+# The 'Mobs' values control configuration for mobs.
+#
+# "repel_neutral" sets whether to repel neutral mobs as well as hostile mobs.
+# Values allowed are 'true' or 'false'
+#
+# "list" is a string list of mobs to repel. If left empty, it will repel all
+# hostile mobs and repel all neutral mobs if "repel_neutral" is true.
 #
 # For example, to only repel creepers and skeletons use it like this:
-# mobs_to_repel:
-# - Creeper
-# - Skeleton
-mobs_to_repel: 
+# Mobs:
+#   list:
+#   - Creeper
+#   - Skeleton
+Mobs:
+  repel_neutral: false
+  list: 

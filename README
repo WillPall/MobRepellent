@@ -1,4 +1,4 @@
-MobRepellent v0.7.0 - a Bukkit plugin
+MobRepellent v0.7.1 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -82,15 +82,18 @@ MobRepellent v0.7.0 - a Bukkit plugin
     - Add visual cue that repeller is working. Possibly with the top block on
       fire (as suggested by darklust). This will be configurable and probably
       default to off.
-      
-* Known Issues
-
-    - Config file cannot be reloaded (/mrreload) in-game
-    - Config file not correctly created on first-run of plugin
-    - Damage values for blocks (e.g. orange wool), doesn't work
-    - Squid don't spawn near repellers
     
 * Changelog
+
+    Version 0.7.1
+        - Configuration files are now fully functional, although the format
+          has changed (old format config files will automatically update to
+          the new format). See the sample config.yml on GitHub for more info.
+        - Reloading config file while in-game is now fixed
+        - Damage values for blocks (e.g. orange wool) now works using '@'
+          in the config file
+        - Many fixes to spawn-blocking (squid, villagers, golems, snowmen,
+          spawner eggs, etc)
 
     Version 0.7.0 (DEVELOPMENT - Use at your own risk)
         - Basic functionality restored for CraftBukkit 1.2.3-R0.2 (#2060)

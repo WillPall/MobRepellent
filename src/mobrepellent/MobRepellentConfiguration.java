@@ -1,13 +1,11 @@
 package mobrepellent;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 
 /**
  * Handles configuration variables for MobRepellent.
@@ -23,28 +21,31 @@ public class MobRepellentConfiguration
 	FileConfiguration config;
 	
 	// Loaded list of mobs to repel
-	HashSet<CreatureType> mobsToRepel;
+	HashSet<EntityType> mobsToRepel;
 	
 	public MobRepellentConfiguration( MobRepellent plugin )
 	{
 		this.plugin = plugin;
 		this.config = plugin.getConfig();
-		plugin.reloadConfig();
+		// Load any default values that aren't set from the default config.yml
 		this.config.options().copyDefaults( true );
+		// Make sure the old style of configuration isn't in use
+		convertOldFile();
+		// Save the defaults back to the plugins/MobRepellent/config.yml file
+		this.plugin.saveConfig();
 		
 		this.load();
 	}
 	
-	// TODO: move all loading into here and change getters to
-	// 		 return stored variables
+	// TODO: move this to a different function and get rid of load()
 	private void load()
 	{
 		// Load the mobs_to_repel list
-		this.mobsToRepel = new HashSet<CreatureType>();
+		this.mobsToRepel = new HashSet<EntityType>();
 		
-		for( String creature : config.getStringList( "mobs_to_repel" ) )
+		for( String creature : config.getStringList( "Mobs.list" ) )
 		{
-			CreatureType type = CreatureType.fromName( creature );
+			EntityType type = EntityType.fromName( creature );
 			
 			if( type != null )
 				mobsToRepel.add( type );
@@ -53,44 +54,58 @@ public class MobRepellentConfiguration
 		}
 	}
 	
+	/**
+	 * Removes configuration variables that were used in the past and converts
+	 * them to the new variable names.
+	 */
+	private void convertOldFile()
+	{
+		// Old old way before multiple repeller types
+		convertVariable( "block_id", "large_id" );
+		convertVariable( "radius", "large_radius" );
+		// Before v0.7.1
+		convertVariable( "small_radius", "Radius.small" );
+		convertVariable( "medium_radius", "Radius.medium" );
+		convertVariable( "large_radius", "Radius.large" );
+		convertVariable( "small_id", "BlockID.small" );
+		convertVariable( "medium_id", "BlockID.medium" );
+		convertVariable( "large_id", "BlockID.large" );
+		convertVariable( "mobs_to_repel", "Mobs.list" );
+		convertVariable( "repel_neutral_mobs", "Mobs.repel_neutral" );
+	}
+	
+	/**
+	 * If it exists, copies the value of oldVariable to newVariable and
+	 * removes oldVariable from the configuration.
+	 * 
+	 * @param oldVariable name of the old variable to convert
+	 * @param newVariable name of the new variable
+	 */
+	private void convertVariable( String oldVariable, String newVariable )
+	{
+		if( config.get( oldVariable ) != null )
+		{
+			config.set( newVariable, config.get( oldVariable ) );
+			config.set( oldVariable, null );
+		}
+	}
+	
 	public void reload()
 	{
-		this.config = plugin.getConfig();
 		plugin.reloadConfig();
+		this.config = plugin.getConfig();
 		this.load();
 		plugin.reloadRepellers();
 	}
 	
-	/*public void setDefaults()
-	{
-		config.setProperty( "small_radius", 20 );
-		config.setProperty( "small_id", 42 );
-		config.setProperty( "medium_radius", 30 );
-		config.setProperty( "medium_id", 41 );
-		config.setProperty( "large_radius", 50 );
-		config.setProperty( "large_id", 57 );
-		// TODO: figure something out
-		//config.setProperty( "ignite_on_completion", false );
-		config.setProperty( "repel_neutral_mobs", false );
-		// TODO: why doesn't this work? or does it?
-		config.setProperty( "mobs_to_repel", "" );
-		config.save();
-	}*/
-	
 	public void save()
-	{
-		// TODO: find an alternative to removeProperty()
-		/*if( config.getBoolean( "debug_mode", false ) == false )
-			config.removeProperty( "debug_mode" );
-		if( config.getInt( "block_id", -1 ) == -1 )
-			config.removeProperty( "block_id" );*/
-		
+	{		
 		plugin.saveConfig();
 	}
 	
 	public boolean shouldRepelNeutralMobs()
 	{
-		return config.getBoolean( "repel_neutral_mobs", false );
+		return config.getBoolean( "Mobs.repel_neutral", false );
 	}
 	
 	public boolean getDebugMode()
@@ -111,7 +126,7 @@ public class MobRepellentConfiguration
 			return MobRepellerStrength.MEDIUM;
 		else if( mat == getBlockType( "large" ) )
 			return MobRepellerStrength.LARGE;
-		else if( config.getInt( "block_id", -1 ) != -1 )
+		/*else if( config.getInt( "block_id", -1 ) != -1 )
 		{
 			int largeId = config.getInt( "block_id", 57 );
 			int largeRad = config.getInt( "radius", 50 );
@@ -127,7 +142,7 @@ public class MobRepellentConfiguration
 			config.set( "large_radius", largeRad );
 			
 			return MobRepellerStrength.LARGE;
-		}
+		}*/
 		
 		return MobRepellerStrength.INVALID;
 	}
@@ -150,45 +165,27 @@ public class MobRepellentConfiguration
 		if( mat == getBlockType( "small" ) &&
 			( getBlockDamage( "small" ) == -1 ||
 			blockData == getBlockDamage( "small" ) ) )
-			return config.getInt( "small_radius", 20 );
+			return config.getInt( "Radius.small", 20 );
 		else if( mat == getBlockType( "medium" ) &&
 			( getBlockDamage( "medium" ) == -1 ||
 			blockData == getBlockDamage( "medium" )  ) )
-			return config.getInt( "medium_radius", 30 );
+			return config.getInt( "Radius.medium", 30 );
 		else if( mat == getBlockType( "large" ) &&
 			( getBlockDamage( "large" ) == -1 ||
 			blockData == getBlockDamage( "large" )  ) )
-			return config.getInt( "large_radius", 50 );
-		else if( config.getInt( "block_id", -1 ) != -1 )
-		{
-			// Backwards compatibility
-			int largeId = config.getInt( "block_id", 57 );
-			int largeRad = config.getInt( "radius", 50 );
-			
-			// TODO: make sure we don't need removeProperty() anymore
-			//config.removeProperty( "block_id" );
-			//config.removeProperty( "radius" );
-			//this.setDefaults();
-			
-			plugin.saveDefaultConfig();
-			
-			config.set( "large_id", largeId );
-			config.set( "large_radius", largeRad );
-			
-			return largeRad;
-		}
+			return config.getInt( "Radius.large", 50 );
 		
 		return -1;
 	}
 	
+	// TODO: this function gets called every time any block event
+	//       or entity event is run. make it more lightweight
 	private int[] getItemType( String name, int def )
 	{
-		String elements[] = config.getString( name, "" ).split( ":" );
+		String elements[] = config.getString( name, "" ).split( "@" );
 
-		// TODO: check these out again, seems to be getting called
-		//		 way too many times
 		/*if( elements.length > 1 )
-			plugin.debug( "Getting type - " + elements[0] + ":" + elements[1] );
+			plugin.debug( "Getting type - " + elements[0] + "@" + elements[1] );
 		else
 			plugin.debug( "Getting type - " + elements[0] );*/
 			
@@ -224,11 +221,11 @@ public class MobRepellentConfiguration
 		int id = -1;
 		
 		if( size.equals( "small" ) )
-			id = getItemType( "small_id", 42 )[0];
+			id = getItemType( "BlockID.small", 42 )[0];
 		else if( size.equals( "medium" ) )
-			id = getItemType( "medium_id", 41 )[0];
+			id = getItemType( "BlockID.medium", 41 )[0];
 		else if( size.equals( "large" ) )
-			id = getItemType( "large_id", 57 )[0];
+			id = getItemType( "BlockID.large", 57 )[0];
 		else
 			id = 57;
 		
@@ -281,16 +278,16 @@ public class MobRepellentConfiguration
 		int damage = -1;
 		
 		if( size.equals( "small" ) )
-			damage = getItemType( "small_id", 42 )[1];
+			damage = getItemType( "BlockID.small", 42 )[1];
 		else if( size.equals( "medium" ) )
-			damage = getItemType( "medium_id", 41 )[1];
+			damage = getItemType( "BlockID.medium", 41 )[1];
 		else if( size.equals( "large" ) )
-			damage = getItemType( "large_id", 57 )[1];
+			damage = getItemType( "BlockID.large", 57 )[1];
 		
 		return damage;
 	}
 	
-	public HashSet<CreatureType> getMobsToRepel()
+	public HashSet<EntityType> getMobsToRepel()
 	{
 		return mobsToRepel;
 	}

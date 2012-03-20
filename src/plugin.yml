@@ -1,6 +1,6 @@
 name: MobRepellent
 main: mobrepellent.MobRepellent
-version: 0.7.0
+version: 0.7.1
 commands:
     mrlist:
         description: Lists all loaded repellers
