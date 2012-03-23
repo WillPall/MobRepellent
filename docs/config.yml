@@ -3,6 +3,11 @@
 # The 'Radius' values allow you to set the radius from the base of the 
 # repeller that mobs will be repelled.
 #
+# The "Radius.ignore_below" variable allows one to restrict repelling to mobs
+# that spawn from the base of the repeller and above. For instance, a repeller
+# placed at "y=50" will never affect mobs spawning from "y=49" and below if
+# "ignore_below" is set to "true".
+#
 # Ex: 'large: 50' will repel mobs a radius of 50 blocks from the base of
 #     the large repeller. In other words, it will repel in a 100 block cube 
 #     around the repeller.
@@ -10,6 +15,7 @@ Radius:
   small: 20
   medium: 30
   large: 50
+  ignore_below: false
 
 # The 'BlockID' values set the block data value to use for the repeller
 # material. Certain blocks are not allowed because of gameplay/performance

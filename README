@@ -1,4 +1,4 @@
-MobRepellent v0.7.1 - a Bukkit plugin
+MobRepellent v0.7.2 - a Bukkit plugin
 
 * What is MobRepellent?
 
@@ -82,8 +82,18 @@ MobRepellent v0.7.1 - a Bukkit plugin
     - Add visual cue that repeller is working. Possibly with the top block on
       fire (as suggested by darklust). This will be configurable and probably
       default to off.
-    
+
+* Known Issues
+    - TNT and creeper explosions can destroy repeller structures without
+      destroying the actual repeller functionality
+    - Permissions allow players to "construct" an inactive repeller,
+      but not destroy it
+      
 * Changelog
+
+    Version 0.7.2
+        - Added configuration option to allow spawning below a repeller,
+          regardless of its radius
 
     Version 0.7.1
         - Configuration files are now fully functional, although the format

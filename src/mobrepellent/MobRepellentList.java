@@ -64,6 +64,10 @@ public class MobRepellentList
 			MobRepeller repeller = list.get( i );
 			int radius = plugin.getMobRepellentConfiguration().getRadius( repeller );
 			
+			// Don't repel if we aren't worrying about mobs below the repeller
+			if( !plugin.getMobRepellentConfiguration().shouldRepelBelow() && ( repeller.getY() > y ) )
+				return false;
+			
 			if( ( ( repeller.getX() - radius ) < x ) && ( ( repeller.getX() + radius ) > x ) &&
 				( ( repeller.getY() - radius ) < y ) && ( ( repeller.getY() + radius ) > y ) &&
 				( ( repeller.getZ() - radius ) < z ) && ( ( repeller.getZ() + radius ) > z ) &&

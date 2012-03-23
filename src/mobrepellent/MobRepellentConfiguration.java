@@ -108,6 +108,11 @@ public class MobRepellentConfiguration
 		return config.getBoolean( "Mobs.repel_neutral", false );
 	}
 	
+	public boolean shouldRepelBelow()
+	{
+		return !config.getBoolean( "Radius.ignore_below", false );
+	}
+	
 	public boolean getDebugMode()
 	{
 		return config.getBoolean( "debug_mode", false );

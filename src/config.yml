@@ -5,6 +5,7 @@
 # 
 # Config options:
 #     Radius: set the cuboid block radius of the small/medium/large repellers
+#     Radius.ignore_below: if true, won't block mobs below the repeller base
 #     BlockID: set the data values for the blocks each repeller type uses
 #     Mobs.repel_neutral: toggle repelling of neutral mobs
 #     Mobs.list: list of mob types to repel (see the sample config.yml at
@@ -14,6 +15,7 @@ Radius:
   small: 20
   medium: 30
   large: 50
+  ignore_below: false
 BlockID:
   small: 42
   medium: 41
@@ -21,12 +23,3 @@ BlockID:
 Mobs:
   repel_neutral: false
   list:
-
-#small_radius: 20
-#medium_radius: 30
-#large_radius: 50
-#small_id: 42
-#medium_id: 41
-#large_id: 57
-#repel_neutral_mobs: false
-#mobs_to_repel: 
