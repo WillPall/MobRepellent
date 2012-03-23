@@ -92,7 +92,7 @@ MobRepellent v0.7.2 - a Bukkit plugin
 * Changelog
 
     Version 0.7.2
-        - Added configuration option to allow spawning below a repeller,
+        - Added configuration option to disallow spawning below a repeller,
           regardless of its radius
 
     Version 0.7.1
