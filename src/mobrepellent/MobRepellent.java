@@ -25,13 +25,6 @@ public class MobRepellent extends JavaPlugin
 	{
 		// Config is needed before anything else
 		config = new MobRepellentConfiguration( this );
-		
-		// Set up the default config, if one doesn't exist
-		/*File configFile = new File( "plugins/MobRepellent/config.yml" );
-		if( !configFile.isFile() )
-		{
-			config.setDefaults();
-		}*/
 
 		File pluginDir = new File( "plugins/MobRepellent/" );
 		if( !pluginDir.exists() )
