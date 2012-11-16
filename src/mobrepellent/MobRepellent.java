@@ -196,10 +196,13 @@ public class MobRepellent extends JavaPlugin
 		return this.config;
 	}
 
+/*
+// Commented out as Minecraft/Bukkit 1.4.4 didn't like the override of this function
 	public Logger getLogger()
 	{
 		return this.log;
 	}
+*/
 
 	public MobRepellentList getRepellerList()
 	{
