@@ -91,6 +91,9 @@ MobRepellent v0.7.2 - a Bukkit plugin
       
 * Changelog
 
+    Version 0.7.2a (Gauthic)
+	- Fixed bug in running craftBukkit 1.4.4
+
     Version 0.7.2
         - Added configuration option to allow spawning below a repeller,
           regardless of its radius
