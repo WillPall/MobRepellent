@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -15,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class MobRepellent extends JavaPlugin
 {
-	private Logger log = Logger.getLogger( "Minecraft" );
+	private Logger log = Bukkit.getLogger();
 	private MobRepellentList repellers;
 	private ArrayList<World> worlds;
 	private MobRepellentConfiguration config;
@@ -196,13 +197,6 @@ public class MobRepellent extends JavaPlugin
 		return this.config;
 	}
 
-/*
-// Commented out as Minecraft/Bukkit 1.4.4 didn't like the override of this function
-	public Logger getLogger()
-	{
-		return this.log;
-	}
-*/
 
 	public MobRepellentList getRepellerList()
 	{
