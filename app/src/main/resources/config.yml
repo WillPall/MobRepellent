@@ -1,0 +1,25 @@
+# MobRepellent Configuration
+# 
+# For more info, see the full sample config.yml at:
+#     https://github.com/WillPall/MobRepellent/raw/master/docs/config.yml
+# 
+# Config options:
+#     Radius: set the cuboid block radius of the small/medium/large repellers
+#     Radius.ignore_below: if true, won't block mobs below the repeller base
+#     Blocks: set the material values for the blocks each repeller type uses
+#     Mobs.repel_neutral: toggle repelling of neutral mobs
+#     Mobs.list: list of mob types to repel (see the sample config.yml at
+#                the link given above). If left empty, will repel all hostile
+#                mobs and all neutral if "repel_neutral" is true.
+Radius:
+  small: 20
+  medium: 30
+  large: 50
+  ignore_below: false
+Blocks:
+  small: IRON_BLOCK
+  medium: GOLD_BLOCK
+  large: DIAMOND_BLOCK
+Mobs:
+  repel_neutral: false
+  list:

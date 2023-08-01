@@ -1,0 +1,48 @@
+name: MobRepellent
+version: 0.8.0
+main: com.willpall.mobrepellent.MobRepellent
+description: Mob Repellent
+author: WillPall
+website: https://willpall.com
+api-version: '1.20'
+commands:
+    mrlist:
+        description: Lists all loaded repellers
+        usage: "Usage: /mrlist"
+    mrreload:
+        description: Reload configuration file
+        usage: "Usage: /mrreload"
+    mrremove:
+        description: Remove a repeller from the list
+        usage: "Usage: /mrremove [repellerNumber]"
+    mrremoveall:
+        description: Remove all repellers from the list
+        usage: "Usage: /mrremoveall"
+permissions:
+    mobrepellent.*:
+        description: Gives access to all MobRepellent commands.
+        children:
+            mobrepellent.list: true
+            mobrepellent.reload: true
+            mobrepellent.remove: true
+            mobrepellent.removeall: true
+            mobrepellent.create: true
+            mobrepellent.destroy: true
+    mobrepellent.list:
+        description: Allows player to use the /mrlist command
+        default: op
+    mobrepellent.reload:
+        description: Allows player to use the /mrreload command
+        default: op
+    mobrepellent.remove:
+        description: Allows player to use the /mrremove command
+        default: op
+    mobrepellent.removeall:
+        description: Allows player to use the /mrremoveall command
+        default: op
+    mobrepellent.create:
+        description: Allows player to build a MobRepeller
+        default: true
+    mobrepellent.destroy:
+        description: Allows player to destroy a MobRepeller
+        default: true

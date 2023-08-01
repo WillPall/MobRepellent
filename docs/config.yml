@@ -17,31 +17,33 @@ Radius:
   large: 50
   ignore_below: false
 
-# The 'BlockID' values set the block data value to use for the repeller
+# The 'Blocks' values set the block data value to use for the repeller
 # material. Certain blocks are not allowed because of gameplay/performance
 # issues. If one of the forbidden blocks is defined, the plugin will default
 # to diamond blocks.
 #
-# List of forbidden IDs: 0, 1, 2, 3, 7, 8, 9, 10, 11, 12, 13, 24, 78,
-#                        79, 82, 87, 88, 110, 121
-#
-# For instance, '1' corresponds to stone block. Placing a single stone
-# block adjacent to a large mountain of stone will cause every stone block
-# in the mountain and every stone block adjacent to the mountain to be
-# confused for a repeller. This causes massive performance issues and could
-# cause mobs to become very very scarce.
-#
-# You can also set specific block types by using an '@' symbol. For
-# instance, to restrict small repellers to only orange wool you would use:
-# 
-# small: 35@1
-#
-# Setting small to 35@0 will only allow repellers out of white wool.
-# Using "small: 35" will allow all types of wool.
-BlockID:
-  small: 42
-  medium: 41
-  large: 57
+# List of forbidden materials:
+#   AIR
+#   STONE
+#   GRASS_BLOCK
+#   DIRT
+#   BEDROCK
+#   WATER
+#   LAVA
+#   SAND
+#   GRAVEL
+#   SANDSTONE
+#   SNOW_BLOCK
+#   ICE
+#   CLAY
+#   NETHERRACK
+#   SOUL_SAND
+#   MYCELIUM
+#   END_STONE
+Blocks:
+  small: IRON_BLOCK
+  medium: GOLD_BLOCK
+  large: DIAMOND_BLOCK
 
 # The 'Mobs' values control configuration for mobs.
 #
