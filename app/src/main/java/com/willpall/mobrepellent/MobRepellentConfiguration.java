@@ -26,9 +26,11 @@ public class MobRepellentConfiguration
 	public MobRepellentConfiguration( MobRepellent plugin )
 	{
 		this.plugin = plugin;
+
+		// Copy default values into the plugins/MobRepellent/config.yml file
+		plugin.saveDefaultConfig();
+
 		this.config = plugin.getConfig();
-		// Load any default values that aren't set from the default config.yml
-		this.config.options().copyDefaults( true );
 		// Make sure the old style of configuration isn't in use
 		convertOldFile();
 		// Save the defaults back to the plugins/MobRepellent/config.yml file

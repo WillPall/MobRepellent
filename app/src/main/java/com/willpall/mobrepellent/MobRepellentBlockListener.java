@@ -20,6 +20,7 @@ public class MobRepellentBlockListener implements Listener
 		this.plugin = instance;
 	}
 
+	// TODO: this is getting called twice on every place event figure out why
 	@EventHandler( priority = EventPriority.NORMAL )
 	public void onBlockPlace( BlockPlaceEvent event )
 	{
