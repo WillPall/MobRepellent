@@ -74,6 +74,9 @@ https://github.com/WillPall/MobRepellent/raw/master/docs/config.yml
       
 ## Changelog
 
+#### Version 0.8.1
+* Fixed an issue where the plugin would not function when first installed on a server without restarting the server
+
 #### Version 0.8.0
 * Updated basic functionality to work with 1.20.1 version of PaperMC
   * There are many edge cases and new mobs/blocks that this update does not take into account. Please submit an issue on GitHub with details if this is failing in a specific instance
