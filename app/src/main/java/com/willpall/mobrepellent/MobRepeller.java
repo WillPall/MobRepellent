@@ -11,7 +11,6 @@ public class MobRepeller
 	private int z;
 	private Material material;
 	private World world;
-	private Material blockData;
 	
 	//private MobRepellerStrength strength;
 	

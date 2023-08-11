@@ -2,7 +2,8 @@ package com.willpall.mobrepellent;
 
 import java.util.ArrayList;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -45,7 +46,11 @@ public class MobRepellentBlockListener implements Listener
 							"[MobRepellent] A new repeller was constructed by " + event.getPlayer().getName() + " at ("
 									+ blockSet.get( i ).getX() + "," + blockSet.get( i ).getY() + ","
 									+ blockSet.get( i ).getZ() + ")" );
-					event.getPlayer().sendMessage( ChatColor.GREEN + "You've constructed a " + ChatColor.YELLOW + plugin.getMobRepellentConfiguration().getStrength( blockSet.get( i ) ).toString() + ChatColor.GREEN + " MobRepeller!" );
+					event.getPlayer().sendMessage(
+						Component.text("You've constructed a ", NamedTextColor.GREEN)
+							.append(Component.text(plugin.getMobRepellentConfiguration().getStrength(blockSet.get(i)).toString(), NamedTextColor.YELLOW))
+							.append(Component.text(" MobRepeller!", NamedTextColor.GREEN))
+					);
 				}
 			}
 		}
@@ -61,13 +66,13 @@ public class MobRepellentBlockListener implements Listener
 		{
 			if( !event.getPlayer().hasPermission( "mobrepellent.destroy" ) )
 			{
-				event.getPlayer().sendMessage( ChatColor.GREEN + "That's a MobRepeller and you don't have permission to destroy it." );
+				event.getPlayer().sendMessage( Component.text("That's a MobRepeller and you don't have permission to destroy it.", NamedTextColor.GREEN));
 				event.setCancelled( true );
 				return;
 			}
 			
 			if( removeBrokenRepellers( block ) )
-				event.getPlayer().sendMessage( ChatColor.RED + "You've destroyed a MobRepeller!" );
+				event.getPlayer().sendMessage( Component.text("You've destroyed a MobRepeller!", NamedTextColor.RED));
 		}
 	}
 

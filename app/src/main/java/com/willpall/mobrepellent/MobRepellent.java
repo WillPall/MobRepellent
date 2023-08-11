@@ -4,20 +4,16 @@
 package com.willpall.mobrepellent;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -51,8 +47,7 @@ public class MobRepellent extends JavaPlugin implements Listener {
         getCommand("mrremove").setExecutor(this);
         getCommand("mrremoveall").setExecutor(this);
 
-		PluginDescriptionFile description = getDescription();
-		getServer().getLogger().info( description.getName() + " (v" + description.getVersion() + ") is enabled!" );
+		getServer().getLogger().info( "MobRepellent (v" + VERSION + ") is enabled!" );
     }
 
     @Override
@@ -81,7 +76,7 @@ public class MobRepellent extends JavaPlugin implements Listener {
 			if( ( player != null ) &&
 				!player.hasPermission( "mobrepellent.list" ) )
 			{
-				player.sendMessage( ChatColor.RED + "You do not have permission to use that command." );
+				player.sendMessage(Component.text("You do not have permission to use that command.", NamedTextColor.RED));
 				return true;
 			}
 			
@@ -91,7 +86,7 @@ public class MobRepellent extends JavaPlugin implements Listener {
 			{
 				if( player != null )
 				{
-					player.sendMessage( ChatColor.GREEN + "No repellers loaded." );
+					player.sendMessage(Component.text("No repellers loaded.", NamedTextColor.GREEN));
 				}
 				else
 					log.info( "[MobRepellent] No repellers loaded." );
@@ -99,7 +94,7 @@ public class MobRepellent extends JavaPlugin implements Listener {
 			else
 			{
 				if( player != null )
-					player.sendMessage( ChatColor.DARK_GREEN + "Loaded Repellers:" );
+					player.sendMessage(Component.text("Loaded Repellers:", NamedTextColor.DARK_GREEN));
 				else
 					log.info( "[MobRepellent] Loaded Repellers:" );
 				
@@ -109,9 +104,9 @@ public class MobRepellent extends JavaPlugin implements Listener {
 
 					if( player != null )
 					{
-						player.sendMessage( ChatColor.GREEN.toString() + ( i + 1 ) + " - W: "
-								+ list.get( i ).getWorld().getName() + " - Co-ord: " + repeller.getX() + ", " + repeller.getY()
-								+ ", " + repeller.getZ() );
+						player.sendMessage(Component.text(Integer.toString(i + 1) + " - W: "
+								+ list.get(i).getWorld().getName() + " - Co-ord: " + repeller.getX() + ", " + repeller.getY()
+								+ ", " + repeller.getZ(), NamedTextColor.GREEN));
 					}
 					else
 						log.info( "    " + ( i + 1 ) + " - W: " + list.get( i ).getWorld().getName() + " - Co-ord: "
@@ -126,14 +121,14 @@ public class MobRepellent extends JavaPlugin implements Listener {
 			if( ( player != null ) &&
 				!player.hasPermission( "mobrepellent.list" ) )
 			{
-				player.sendMessage( ChatColor.RED + "You do not have permission to use that command." );
+				player.sendMessage(Component.text("You do not have permission to use that command.", NamedTextColor.RED));
 				return true;
 			}
 			
 			this.config.reload();
 			if( player != null )
 			{
-				player.sendMessage( ChatColor.GREEN.toString() + "MobRepellent config successfully reloaded." );
+				player.sendMessage(Component.text("MobRepellent config successfully reloaded.", NamedTextColor.GREEN));
 			}
 			else
 				log.info( "[MobRepellent] Config successfully reloaded." );
@@ -146,7 +141,7 @@ public class MobRepellent extends JavaPlugin implements Listener {
 			if( ( player != null ) &&
 				!player.hasPermission( "mobrepellent.remove" ) )
 			{
-				player.sendMessage( ChatColor.RED + "You do not have permission to use that command." );
+				player.sendMessage(Component.text("You do not have permission to use that command.", NamedTextColor.RED));
 				return true;
 			}
 			
@@ -158,7 +153,7 @@ public class MobRepellent extends JavaPlugin implements Listener {
 				if( repellers.remove( repellerNum ) )
 				{
 					if( player != null )
-						player.sendMessage( ChatColor.GREEN + "Removed repeller #" + repellerNum );
+						player.sendMessage(Component.text("Removed repeller #" + repellerNum, NamedTextColor.GREEN));
 					else
 						log.info( "[MobRepellent] Removed repeller #" + repellerNum );
 					
@@ -177,13 +172,13 @@ public class MobRepellent extends JavaPlugin implements Listener {
 			if( ( player != null ) &&
 				!player.hasPermission( "mobrepellent.removeall" ) )
 			{
-				player.sendMessage( ChatColor.RED + "You do not have permission to use that command." );
+				player.sendMessage(Component.text("You do not have permission to use that command.", NamedTextColor.RED));
 				return true;
 			}
 			
 			repellers.removeAll();
 			if( player != null )
-				player.sendMessage( ChatColor.GREEN + "Removed all repellers" );
+				player.sendMessage(Component.text("Removed all repellers.", NamedTextColor.GREEN));
 			else
 				log.info( "[MobRepellent] Removed all repellers" );
 			
