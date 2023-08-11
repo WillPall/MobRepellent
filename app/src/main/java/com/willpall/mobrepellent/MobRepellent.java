@@ -56,11 +56,6 @@ public class MobRepellent extends JavaPlugin implements Listener {
 		config.save();
 	}
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage(Component.text("Hello there, " + event.getPlayer().getName() + "!"));
-    }
-
     @Override
     public boolean onCommand( CommandSender sender, Command command, String label, String[] args )
 	{
