@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class MobRepellent extends JavaPlugin implements Listener {
+	private final String VERSION = "3.0.0"; 
 	private Logger log = Logger.getLogger( "Minecraft" );
 	private MobRepellentList repellers;
 	private ArrayList<World> worlds;

@@ -74,6 +74,9 @@ https://github.com/WillPall/MobRepellent/raw/master/docs/config.yml
       
 ## Changelog
 
+#### Version 3.0.0
+* Bump version for first release since 2017
+
 #### Version 0.8.1
 * Fixed an issue where the plugin would not function when first installed on a server without restarting the server
 
